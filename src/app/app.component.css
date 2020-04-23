@@ -1,0 +1,63 @@
+
+.page-wrapper{
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+   text-align: center;
+  font-size: 50px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: linear-gradient(rgb(229, 255, 0), rgb(34, 34, 7));
+  color:white;
+  flex-direction: column;
+
+}
+.day{
+   color:black;
+}
+.wrapper{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+ flex: 1;
+}
+ 
+.row2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+ }
+.date{
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+ }
+.passed{
+  background:green !important;
+  color:white;
+}
+.not-passed{
+  background: rgb(241, 55, 71);
+  color:white;
+  padding: 20px;
+
+}
+.cols{
+  width: 100%;
+ 
+}
+.remaining{
+  font-size: 80px;
+  height: 200px;
+  justify-content: center;
+    align-items: center;
+    display: flex;
+ }
+ .first{
+  border-bottom: 2px solid white;
+
+ }
+ .date{
+   margin-top: 10px;
+ }

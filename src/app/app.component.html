@@ -1,0 +1,24 @@
+<div class="page-wrapper">
+	<div class="day">Gün #{{day}}</div>
+	<div class="wrapper">
+		<div class="remaining">
+			{{remaining}}
+		</div>
+
+		<div class="row2">
+			<div class="cols">
+				<div class="not-passed first" [class.passed]="iftarPassed">İftar {{end}}</div>
+				<div class="not-passed" [class.passed]="sahurPassed">Sahur {{start}}</div>
+			</div>
+		</div>
+		<div class="date">
+			{{date}}
+		</div>
+	</div>
+  <div>
+
+	<select id="city"  (change)="selectCity($event)">
+    <option value="34">İstanbul</option>
+    <option value="45">Manisa</option>
+  </select>
+</div>
