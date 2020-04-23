@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   sahurPassed;
   iftarPassed;
 
-  city=34;
+  city=45;
 
   selectCity(e){
     this.city = e.target.value;
