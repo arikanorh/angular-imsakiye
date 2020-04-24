@@ -1,63 +1,76 @@
-
-.page-wrapper{
+.page-wrapper {
   display: flex;
   justify-content: center;
   height: 100%;
   width: 100%;
-   text-align: center;
+  text-align: center;
   font-size: 50px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-image: linear-gradient(rgb(229, 255, 0), rgb(34, 34, 7));
-  color:white;
+  color: white;
   flex-direction: column;
 
 }
-.day{
-   color:black;
+
+.day {
+  color: black;
 }
-.wrapper{
+
+.wrapper {
   display: flex;
   justify-content: center;
   flex-direction: column;
- flex: 1;
+  flex: 1;
 }
- 
-.row2{
+
+.row2 {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
- }
-.date{
+}
+
+.date {
   display: flex;
   justify-content: center;
   font-size: 30px;
- }
-.passed{
-  background:green !important;
-  color:white;
 }
-.not-passed{
+
+.passed {
+  background: green !important;
+  color: white;
+}
+
+.not-passed {
   background: rgb(241, 55, 71);
-  color:white;
+  color: white;
   padding: 20px;
 
 }
-.cols{
+
+.cols {
   width: 100%;
- 
+
 }
-.remaining{
+
+.remaining {
   font-size: 80px;
   height: 200px;
   justify-content: center;
-    align-items: center;
-    display: flex;
- }
- .first{
+  align-items: center;
+  display: flex;
+}
+
+.first {
   border-bottom: 2px solid white;
 
- }
- .date{
-   margin-top: 10px;
- }
+}
+
+.date {
+  margin-top: 10px;
+}
+
+
+.city select {
+  font-size: 20px;
+}
