@@ -1,14 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
 import { imsakiye } from "./imsakiye";
-import  moment from "moment";
+import * as moment from "moment";
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: "my-app",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
-}) 
+})
 export class AppComponent implements OnInit {
+  @ViewChild('city') cityElement : ElementRef;
   datas = imsakiye;
+  cities=[
+    {num:34,name:'İstanbul'},
+    {num:45,name:'Manisa'},
+    {num:6,name:'Ankara'},
+    {num:41,name:'Çorlu'}
+  ]
 
   day = "";
   date = "";
@@ -18,25 +26,36 @@ export class AppComponent implements OnInit {
   sahurPassed;
   iftarPassed;
 
-  city=45;
+  city:number;
 
-  selectCity(e){
-    this.city = e.target.value;
-    this.calc();
-   }
-
-  ngOnInit() {
-    this.calc();
-    let self = this;
-    setInterval(function () {
-      self.calc();
-    }, 1000);
+  constructor(private cookieService: CookieService) {
 
   }
 
+  selectCity(e) {
+     this.cookieService.set("city", this.city + '');
+  }
+
+  ngOnInit() {
+  
+    this.city = +this.cookieService.get("city") || 34;;
+ 
+    let self = this;
+
+    setInterval(function () {
+      self.calc();
+    }, 1000);
+    
+     this.calc();
+  }
+
+ 
   calc() {
 
-    let data =this.datas[this.city];
+
+   // this.cityElement.nativeElement.value = this.city;
+
+    let data = this.datas[this.city];
     let format = "YYYY-MM-DD HH:mm:ss";
     // let todayDateTime = moment("2020-04-25 20:00:30", format);
     let todayDateTime = moment();
@@ -99,11 +118,11 @@ export class AppComponent implements OnInit {
 
   convertToXXHoursYYMinutes(seconds) {
     seconds = Math.floor(seconds);
-    let hour = Math.floor(seconds / (60*60));
-    let minutes = Math.floor((seconds % (60*60)) / 60);
-    let secs =  seconds % 60;
-   
-    return this.padZero(hour)+":"+this.padZero(minutes)+":"+this.padZero(secs);
+    let hour = Math.floor(seconds / (60 * 60));
+    let minutes = Math.floor((seconds % (60 * 60)) / 60);
+    let secs = seconds % 60;
+
+    return this.padZero(hour) + ":" + this.padZero(minutes) + ":" + this.padZero(secs);
   }
 
   padZero(number) {
@@ -115,4 +134,3 @@ export class AppComponent implements OnInit {
 
 
 }
- 

@@ -7,18 +7,20 @@
 
 		<div class="row2">
 			<div class="cols">
-				<div class="not-passed first" [class.passed]="iftarPassed">İftar {{end}}</div>
 				<div class="not-passed" [class.passed]="sahurPassed">Sahur {{start}}</div>
+				<div class="not-passed first" [class.passed]="iftarPassed">İftar {{end}}</div>
 			</div>
 		</div>
 		<div class="date">
 			{{date}}
 		</div>
 	</div>
-  <div>
+	<div>
 
-	<select id="city"  (change)="selectCity($event)">
-    <option value="45">Manisa</option>
-    <option value="34">İstanbul</option>
-  </select>
+		<div class="city">
+			<select type="number" [(ngModel)]="city" (change)="selectCity($event)" >
+			  <option *ngFor="let level of cities" [ngValue]="level.num">{{level.name}}</option>
+			</select>
+		</div>
+	</div>
 </div>
