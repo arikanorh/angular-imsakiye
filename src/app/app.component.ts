@@ -9,14 +9,9 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-  @ViewChild('city') cityElement : ElementRef;
+  @ViewChild('city') cityElement: ElementRef;
   datas = imsakiye;
-  cities=[
-    {num:34,name:'İstanbul'},
-    {num:45,name:'Manisa'},
-    {num:6,name:'Ankara'},
-    {num:41,name:'Çorlu'}
-  ]
+  cities = Object.keys(this.datas);
 
   day = "";
   date = "";
@@ -26,34 +21,38 @@ export class AppComponent implements OnInit {
   sahurPassed;
   iftarPassed;
 
-  city:number;
+  city: string;
 
   constructor(private cookieService: CookieService) {
 
   }
 
   selectCity(e) {
-     this.cookieService.set("city", this.city + '');
+    this.cookieService.set("city", this.city);
   }
 
   ngOnInit() {
-  
-    this.city = +this.cookieService.get("city") || 34;;
- 
+
+    this.city = this.cookieService.get("city");;
+    if (!this.cities.includes(this.city)) {
+      this.city = this.cities[0];
+      this.cookieService.set("city", this.city);
+    }
+
     let self = this;
 
     setInterval(function () {
       self.calc();
     }, 1000);
-    
-     this.calc();
+
+    this.calc();
   }
 
- 
+
   calc() {
 
 
-   // this.cityElement.nativeElement.value = this.city;
+    // this.cityElement.nativeElement.value = this.city;
 
     let data = this.datas[this.city];
     let format = "YYYY-MM-DD HH:mm:ss";

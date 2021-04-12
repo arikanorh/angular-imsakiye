@@ -1,8 +1,14 @@
 <div class="page-wrapper">
 	<div class="day">Gün #{{day}}</div>
 	<div class="wrapper">
+
 		<div class="remaining">
-			{{remaining}}
+			<div class="lit-title">
+				Kalan Zaman
+			</div>
+			<div>
+				{{remaining}}
+			</div>
 		</div>
 
 		<div class="row2">
@@ -11,15 +17,20 @@
 				<div class="not-passed first" [class.passed]="iftarPassed">İftar {{end}}</div>
 			</div>
 		</div>
-		<div class="date">
-			{{date}}
+		<div class="date-wrapper">
+			<div class="lit-title">
+				Şuan
+			</div>
+			<div class="date">
+				{{date}}
+			</div>
 		</div>
 	</div>
 	<div>
 
 		<div class="city">
-			<select type="number" [(ngModel)]="city" (change)="selectCity($event)" >
-			  <option *ngFor="let level of cities" [ngValue]="level.num">{{level.name}}</option>
+			<select [(ngModel)]="city" (change)="selectCity($event)">
+				<option *ngFor="let level of cities" [ngValue]="level">{{level}}</option>
 			</select>
 		</div>
 	</div>
