@@ -8,6 +8,7 @@ import {
 import { imsakiye } from './imsakiye';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'my-app',
@@ -29,13 +30,22 @@ export class AppComponent implements OnInit {
 
   city: string;
 
-  constructor(private cookieService: CookieService) {}
+  constructor(
+    private cookieService: CookieService,
+    private route: ActivatedRoute
+  ) {}
 
   selectCity(e) {
     this.cookieService.set('city', this.city);
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe((e) => {
+      if (e.city) {
+        this.city = e.city;
+        this.selectCity(e);
+      }
+    });
     this.city = this.cookieService.get('city');
     if (!this.cities.includes(this.city)) {
       this.city = this.cities[0];
