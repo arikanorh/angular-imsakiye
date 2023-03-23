@@ -1,42 +1,45 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
-import { imsakiye } from "./imsakiye";
-import * as moment from "moment";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core';
+import { imsakiye } from './imsakiye';
+import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: "my-app",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   @ViewChild('city') cityElement: ElementRef;
   datas = imsakiye;
   cities = Object.keys(this.datas);
 
-  day = "";
-  date = "";
-  start = "";
-  end = "";
+  day = '';
+  date = '';
+  start = '';
+  end = '';
   remaining;
   sahurPassed;
   iftarPassed;
 
   city: string;
 
-  constructor(private cookieService: CookieService) {
-
-  }
+  constructor(private cookieService: CookieService) {}
 
   selectCity(e) {
-    this.cookieService.set("city", this.city);
+    this.cookieService.set('city', this.city);
   }
 
   ngOnInit() {
-
-    this.city = this.cookieService.get("city");;
+    this.city = this.cookieService.get('city');
     if (!this.cities.includes(this.city)) {
       this.city = this.cities[0];
-      this.cookieService.set("city", this.city);
+      this.cookieService.set('city', this.city);
     }
 
     let self = this;
@@ -48,18 +51,15 @@ export class AppComponent implements OnInit {
     this.calc();
   }
 
-
   calc() {
-
-
     // this.cityElement.nativeElement.value = this.city;
 
     let data = this.datas[this.city];
-    let format = "YYYY-MM-DD HH:mm:ss";
+    let format = 'YYYY-MM-DD HH:mm:ss';
     // let todayDateTime = moment("2020-04-25 20:00:30", format);
     let todayDateTime = moment();
 
-    let todayDate = todayDateTime.format("YYYY-MM-DD");
+    let todayDate = todayDateTime.format('YYYY-MM-DD');
 
     let index = 0;
     for (let i = 0; i < data.length; i++) {
@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
     let today = data[index];
     let next = data[index + 1];
 
-    let sahurDateTimeStr = today.date + " " + today.start;
-    let iftarDateTimeStr = today.date + " " + today.end;
+    let sahurDateTimeStr = today.date + ' ' + today.start;
+    let iftarDateTimeStr = today.date + ' ' + today.end;
     let sahurDateTime = moment(sahurDateTimeStr, format);
     let iftarDateTime = moment(iftarDateTimeStr, format);
 
@@ -87,8 +87,8 @@ export class AppComponent implements OnInit {
       nextDay = true;
     }
 
-    sahurDateTimeStr = today.date + " " + today.start;
-    iftarDateTimeStr = today.date + " " + today.end;
+    sahurDateTimeStr = today.date + ' ' + today.start;
+    iftarDateTimeStr = today.date + ' ' + today.end;
     sahurDateTime = moment(sahurDateTimeStr, format);
     iftarDateTime = moment(iftarDateTimeStr, format);
 
@@ -112,7 +112,9 @@ export class AppComponent implements OnInit {
     if (sahurPassed) {
       subjectDateTime = iftarDateTime;
     }
-    this.remaining = this.convertToXXHoursYYMinutes(moment.duration(subjectDateTime.diff(todayDateTime)).as('seconds'));
+    this.remaining = this.convertToXXHoursYYMinutes(
+      moment.duration(subjectDateTime.diff(todayDateTime)).as('seconds')
+    );
   }
 
   convertToXXHoursYYMinutes(seconds) {
@@ -121,15 +123,17 @@ export class AppComponent implements OnInit {
     let minutes = Math.floor((seconds % (60 * 60)) / 60);
     let secs = seconds % 60;
 
-    return this.padZero(hour) + ":" + this.padZero(minutes) + ":" + this.padZero(secs);
+    return (
+      this.padZero(hour) +
+      ':' +
+      this.padZero(minutes) +
+      ':' +
+      this.padZero(secs)
+    );
   }
 
   padZero(number) {
-    if (number < 10)
-      return "0" + number;
+    if (number < 10) return '0' + number;
     else return number;
   }
-
-
-
 }
