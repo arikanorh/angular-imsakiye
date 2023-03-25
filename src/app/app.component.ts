@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   datas = imsakiye;
   cities = Object.keys(this.datas);
 
-  day = '';
+  day: string = '';
   date = '';
   start = '';
   end = '';
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
     iftarDateTime = moment(iftarDateTimeStr, format);
 
     this.date = todayDateTime.format(format);
-    this.day = today.day;
+    this.day = today.day + '/' + this.datas[this.city].length;
     this.start = today.start;
     this.end = today.end;
 
