@@ -14,7 +14,8 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/demo"
+              "base": "dist/demo",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
