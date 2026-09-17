@@ -4,6 +4,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { imsakiye } from './imsakiye';
 import moment from 'moment';
@@ -11,9 +12,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'my-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'my-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AppComponent implements OnInit {
   @ViewChild('city') cityElement: ElementRef;

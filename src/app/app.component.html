@@ -28,9 +28,11 @@
   <div>
     <div class="city">
       <select [(ngModel)]="city" (change)="selectCity($event)">
-        <option *ngFor="let level of cities" [ngValue]="level">
-          {{ level }}
-        </option>
+        @for (level of cities; track level) {
+          <option [ngValue]="level">
+            {{ level }}
+          </option>
+        }
       </select>
     </div>
   </div>
