@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@angular/animations": "^21.2.23",
-    "@angular/common": "^21.2.23",
-    "@angular/compiler": "^21.2.23",
-    "@angular/core": "^21.2.23",
-    "@angular/forms": "^21.2.23",
-    "@angular/platform-browser": "^21.2.23",
-    "@angular/platform-browser-dynamic": "^21.2.23",
-    "@angular/router": "^21.2.23",
+    "@angular/animations": "^22.1.7",
+    "@angular/common": "^22.1.7",
+    "@angular/compiler": "^22.1.7",
+    "@angular/core": "^22.1.7",
+    "@angular/forms": "^22.1.7",
+    "@angular/platform-browser": "^22.1.7",
+    "@angular/platform-browser-dynamic": "^22.1.7",
+    "@angular/router": "^22.1.7",
     "core-js": "^3.29.1",
     "moment": "^2.29.4",
-    "ngx-cookie-service": "^21.0.0",
+    "ngx-cookie-service": "^22.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.5.0",
     "zone.js": "^0.15.1"
@@ -24,11 +24,11 @@
     "build": "ng build"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^21.2.24",
-    "@angular/cli": "~21.2.24",
-    "@angular/compiler-cli": "^21.2.23",
-    "@angular/language-service": "^21.2.23",
+    "@angular-devkit/build-angular": "^22.1.8",
+    "@angular/cli": "~22.1.8",
+    "@angular/compiler-cli": "^22.1.7",
+    "@angular/language-service": "^22.1.7",
     "@types/node": "^18.15.0",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   }
 }
