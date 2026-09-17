@@ -526,11 +526,5 @@ export const imsakiye = {
       start: '6:05',
       end: '19:16',
     },
-    {
-      day: '',
-      date: '',
-      start: '6:04',
-      end: '19:17',
-    },
   ],
 };
