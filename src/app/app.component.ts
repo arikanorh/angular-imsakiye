@@ -90,6 +90,19 @@ export class AppComponent implements OnInit {
     let sahurPassed: boolean = todayDateTime.isAfter(sahurDateTime);
     let iftarPassed: boolean = todayDateTime.isAfter(iftarDateTime);
 
+    if (iftarPassed && !next) {
+      // Takvimdeki son günün iftarı geçti; bir sonraki gün verisi yok
+      // (Ramazan bitti). Sayacı burada dondurup çökmeyi/NaN'i önlüyoruz.
+      this.date = todayDateTime.format(format);
+      this.day = today.day + '/' + data.length;
+      this.start = today.start;
+      this.end = today.end;
+      this.sahurPassed = true;
+      this.iftarPassed = true;
+      this.remaining = '00:00:00';
+      return;
+    }
+
     let nextDay: boolean = false;
 
     if (iftarPassed) {
