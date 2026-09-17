@@ -4,7 +4,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     selector: 'hello',
     template: `<h1>Hello {{name}}!</h1>`,
     styles: [`h1 { font-family: Lato; }`],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.Default,
     standalone: false
 })
 export class HelloComponent  {
