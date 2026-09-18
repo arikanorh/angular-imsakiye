@@ -1,5 +1,17 @@
 <div class="content">
 
+  @if (ramadanEnded) {
+    <div class="farewell-card">
+      <div class="farewell-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5Z" /></svg>
+      </div>
+      <div class="label-eyebrow badge">Ramazan Bitti</div>
+      <div class="farewell-headline">Bayramınız<br />Mübarek Olsun</div>
+      <div class="farewell-sub">{{ totalDays }} günlük yolculuk tamamlandı. {{ city }}'da bu yılki imsakiye burada sona eriyor.</div>
+      <div class="farewell-footer">{{ nextRamadanYear }}'de görüşmek üzere</div>
+    </div>
+  } @else {
+
   @if (showRamadanCountdown) {
     <div class="ramadan-countdown-card">
       <div class="label-eyebrow badge">Ramazan'a Kalan</div>
@@ -86,6 +98,8 @@
         <div class="day-progress-fill" [style.width.%]="dayProgressPercent"></div>
       </div>
     </div>
+  }
+
   }
 
 </div>

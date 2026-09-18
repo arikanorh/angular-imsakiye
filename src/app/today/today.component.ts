@@ -43,6 +43,9 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   showRamadanCountdown = false;
   ramadanStarted = false;
+  ramadanEnded = false;
+  totalDays = 0;
+  nextRamadanYear = 0;
   daysUntilRamadan = 0;
   ramadanProgressPercent = 0;
   todayShortLabel = '';
@@ -52,6 +55,10 @@ export class TodayComponent implements OnInit, OnDestroy {
   private timer;
 
   constructor(private cityService: CityService) {}
+
+  get city(): string {
+    return this.cityService.city;
+  }
 
   get progressGradient(): string {
     return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.progressPercent}%, #d8e6e2 ${this.progressPercent}%, #d8e6e2 100%)`;
@@ -101,6 +108,19 @@ export class TodayComponent implements OnInit, OnDestroy {
 
     let todayDate = todayDateTime.format('YYYY-MM-DD');
     this.ramadanStarted = todayDate >= data[0].date;
+    this.ramadanEnded = todayDate > data[data.length - 1].date;
+
+    if (this.ramadanEnded) {
+      // Takvimdeki son günün ertesinden itibaren artık eşleşen bir gün
+      // yok; aşağıdaki hesaplar anlamsız/negatif değerler üretir. Bunun
+      // yerine kapanış kartını göstermek için burada duruyoruz.
+      this.date = this.formatDisplayDate(todayDateTime);
+      this.totalDays = data.length;
+      this.nextRamadanYear = moment(data[data.length - 1].date, 'YYYY-MM-DD').year() + 1;
+      this.showRamadanCountdown = false;
+      this.showRemainingCountdown = false;
+      return;
+    }
 
     let index = 0;
     for (let i = 0; i < data.length; i++) {
