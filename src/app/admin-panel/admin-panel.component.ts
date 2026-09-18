@@ -102,6 +102,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (!value) {
       return;
     }
+    // Saat girişindeki dakika/saat okları 59->00 ya da 23->00'a sararsa
+    // (yani yeni değer eskisinden küçükse) bir sonraki güne geçilmiş
+    // demektir; gün kaydırıcısını da buna göre ilerlet.
+    const [newH, newM] = value.split(':').map(Number);
+    const [oldH, oldM] = this.timeOfDay.split(':').map(Number);
+    if (newH * 60 + newM < oldH * 60 + oldM) {
+      this.dayOffset = Math.min(this.maxOffset, this.dayOffset + 1);
+    }
     this.timeOfDay = value;
     this.simTime.set(this.selectedMoment);
   }
