@@ -1,0 +1,21 @@
+<div class="takvim-list">
+  @for (gun of days; track gun.day) {
+    <div class="takvim-row" [class.today]="gun.isToday" [class.past]="gun.isPast">
+      <div class="takvim-day-badge">{{ gun.day }}</div>
+      <div class="takvim-date">
+        <div class="d1">{{ gun.dateLabel }}</div>
+        <div class="d2">{{ gun.weekdayLabel }}{{ gun.isToday ? ' · Bugün' : '' }}</div>
+      </div>
+      <div class="takvim-times">
+        <div class="t">
+          <div class="l">Sahur</div>
+          <div class="v">{{ gun.start }}</div>
+        </div>
+        <div class="t">
+          <div class="l">İftar</div>
+          <div class="v">{{ gun.end }}</div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

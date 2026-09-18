@@ -86,300 +86,41 @@
   pointer-events: none;
 }
 
-.content {
+.tab-bar {
+  display: flex;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 6px;
+  gap: 4px;
+  margin-top: 18px;
+  box-shadow: 0 10px 22px -14px rgba(15, 43, 38, 0.35);
+  flex: none;
+}
+
+.tab-btn {
   flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 26px;
-  padding: 24px 0;
-}
-
-.timeline-card {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 26px 22px 22px;
-  box-shadow: 0 18px 36px -22px rgba(15, 43, 38, 0.22);
-}
-
-.label-eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #5c6b66;
-}
-
-.label-eyebrow.small {
-  font-size: 10px;
-}
-
-.ramadan-countdown-card {
-  background: linear-gradient(165deg, #ffffff 0%, #eaf7f4 100%);
-  border-radius: 28px;
-  padding: 30px 26px 28px;
-  box-shadow: 0 26px 48px -20px rgba(15, 43, 38, 0.32);
-  border: 1px solid rgba(15, 123, 108, 0.14);
-}
-
-.label-eyebrow.badge {
-  display: inline-block;
-  color: #0f7b6c;
-  background: rgba(15, 123, 108, 0.12);
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.ramadan-track-wrapper {
-  position: relative;
-  height: 48px;
-  margin: 16px 4px 0;
-}
-
-.ramadan-track {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 21px;
-  height: 7px;
-  border-radius: 999px;
-}
-
-.ramadan-track-icon {
-  position: absolute;
-  top: 24px;
-  transform: translateY(-50%);
-  width: 26px;
-  height: 26px;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  border: 4px solid #ffffff;
-  border-radius: 50%;
-}
-
-.ramadan-track-icon.start {
-  left: -13px;
-  color: #0f7b6c;
-}
-
-.ramadan-track-icon.end {
-  right: -13px;
-  color: #7c8b87;
-}
-
-.ramadan-track-dot {
-  position: absolute;
-  top: 14px;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #0f7b6c;
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 0 5px rgba(15, 123, 108, 0.24);
-}
-
-.ramadan-track-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-}
-
-.ramadan-track-labels .right {
-  text-align: right;
-}
-
-.ramadan-track-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f2b26;
-}
-
-.ramadan-countdown-headline {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.ramadan-countdown-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(36px, 12vw, 52px);
-  font-weight: 700;
-  color: #0f2b26;
-}
-
-.timeline-track-wrapper {
-  position: relative;
-  height: 56px;
-}
-
-.timeline-track {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 24px;
-  height: 6px;
-  border-radius: 999px;
-}
-
-.track-icon {
-  position: absolute;
-  top: 27px;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  border: 4px solid #ffffff;
-  border-radius: 50%;
-}
-
-.track-icon.start {
-  left: -12px;
-  color: #0f7b6c;
-}
-
-.track-icon.end {
-  right: -12px;
-  color: #7c8b87;
-}
-
-.track-dot {
-  position: absolute;
-  top: 17px;
-  transform: translateX(-50%);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #0f7b6c;
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22);
-}
-
-.track-now {
-  position: absolute;
-  top: -4px;
-  transform: translateX(-50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
-  color: #0f7b6c;
-  white-space: nowrap;
-}
-
-.timeline-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-}
-
-.timeline-label-title {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #5c6b66;
-}
-
-.timeline-label.right .timeline-label-title {
-  justify-content: flex-end;
-}
-
-.timeline-label.right {
-  text-align: right;
-}
-
-.timeline-label.passed .timeline-label-title,
-.timeline-label.passed .timeline-label-value {
-  color: #0f7b6c;
-}
-
-.timeline-label-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
-  color: #0f2b26;
-}
-
-.remaining {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-  width: 100%;
-}
-
-.remaining-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #5c6b66;
-}
-
-.remaining-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(28px, 11vw, 56px);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: #0f2b26;
-  max-width: 100%;
-  white-space: nowrap;
-}
-
-.day-progress-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  gap: 6px;
+  padding: 9px 0;
+  border-radius: 11px;
   font-size: 12px;
   font-weight: 700;
   color: #5c6b66;
+  text-decoration: none;
 }
 
-.day-progress-count {
-  font-family: 'JetBrains Mono', monospace;
-  color: #0f7b6c;
-}
-
-.day-progress-track {
-  height: 8px;
-  border-radius: 999px;
-  background: #d8e6e2;
-  overflow: hidden;
-}
-
-.day-progress-fill {
-  height: 100%;
-  border-radius: 999px;
+.tab-btn.active {
   background: #0f7b6c;
-  transition: width 0.3s ease;
-}
-
-.date-wrapper {
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #5c6b66;
-  padding-bottom: 6px;
+  color: #ffffff;
 }
 
 .build-info {
   text-align: center;
   font-size: 9.5px;
   color: rgba(15, 43, 38, 0.35);
+  margin-top: 8px;
 }
 
 .update-toast {
