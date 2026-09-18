@@ -57,27 +57,3 @@
     </button>
   </div>
 }
-
-<div class="sim-mobile-bar" [class.simulating]="simTime.isActive">
-  <div class="sim-mobile-readout">
-    <div class="sim-mobile-text">
-      <div class="sim-mobile-date">{{ readoutDate }}</div>
-      <div class="sim-mobile-status">{{ statusLabel }}</div>
-    </div>
-    <button type="button" class="sim-mobile-reset" (click)="resetToReal()" aria-label="Gerçek zamana dön">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 12a9 9 0 1 1 3 6.7M3 12v5h5" />
-      </svg>
-    </button>
-  </div>
-  <input
-    type="range"
-    class="sim-mobile-slider"
-    aria-label="Simüle edilen gün"
-    [min]="minOffset"
-    [max]="maxOffset"
-    step="1"
-    [value]="dayOffset"
-    (input)="onOffsetChange($any($event.target).value)"
-  />
-</div>
