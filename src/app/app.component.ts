@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
   end = '';
   remaining;
   remainingLabel = '';
+  showRemainingCountdown = true;
   sahurPassed;
   iftarPassed;
   progressPercent = 0;
@@ -202,6 +203,7 @@ export class AppComponent implements OnInit {
       this.iftarPassed = true;
       this.remaining = '00:00:00';
       this.remainingLabel = 'İftara kalan';
+      this.showRemainingCountdown = true;
       this.progressPercent = 100;
       this.dayProgressPercent = (Number(today.day) / data.length) * 100;
       return;
@@ -247,9 +249,11 @@ export class AppComponent implements OnInit {
       subjectDateTime = iftarDateTime;
     }
     this.remainingLabel = sahurPassed ? 'İftara kalan' : 'Sahura kalan';
-    this.remaining = this.convertToXXHoursYYMinutes(
-      moment.duration(subjectDateTime.diff(todayDateTime)).as('seconds')
-    );
+    let remainingSeconds = moment
+      .duration(subjectDateTime.diff(todayDateTime))
+      .as('seconds');
+    this.showRemainingCountdown = remainingSeconds <= 24 * 60 * 60;
+    this.remaining = this.convertToXXHoursYYMinutes(remainingSeconds);
   }
 
   convertToXXHoursYYMinutes(seconds) {

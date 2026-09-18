@@ -89,10 +89,12 @@
         </div>
       </div>
 
-      <div class="remaining">
-        <div class="remaining-label">{{ remainingLabel }}</div>
-        <div class="remaining-value">{{ remaining }}</div>
-      </div>
+      @if (showRemainingCountdown) {
+        <div class="remaining">
+          <div class="remaining-label">{{ remainingLabel }}</div>
+          <div class="remaining-value">{{ remaining }}</div>
+        </div>
+      }
 
       <div class="day-progress">
         <div class="day-progress-header">
