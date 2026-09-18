@@ -2,7 +2,14 @@
   <div class="phone-frame">
 
     <div class="header-card">
-      <div class="app-title">İmsakiye</div>
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <rect width="24" height="24" fill="#0F7B6C" />
+          <circle cx="12" cy="6.6" r="1.9" fill="#D8B26E" />
+          <rect x="10.2" y="10.1" width="3.6" height="10.3" rx="1.8" fill="#FBF6EC" />
+        </svg>
+        <div class="app-title">İmsakiye</div>
+      </div>
       <div class="city-picker">
         <label for="city" class="sr-only">Şehir seç</label>
         <select id="city" [(ngModel)]="city">
@@ -12,7 +19,7 @@
             </option>
           }
         </select>
-        <svg class="chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 9l6 6 6-6" />
         </svg>
       </div>
