@@ -12,4 +12,18 @@ body {
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
+  /* Yerel uygulama hissi: uzun basışta metin seçimi/kopyala menüsü,
+     dokunma vurgusu ve çift dokunma ile yakınlaştırma kapalı. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+input,
+select,
+textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
 }
