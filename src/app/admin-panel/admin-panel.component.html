@@ -24,6 +24,7 @@
 
     <div class="sim-readout">
       <div class="sim-date">{{ readoutDate }}</div>
+      <div class="sim-status">{{ statusLabel }}</div>
       <input
         type="time"
         class="sim-time-input"
@@ -34,25 +35,18 @@
     </div>
 
     <div class="sim-slider-row">
-      <div
-        class="sim-track-wrap"
-        #track
-        (pointerdown)="onTrackPointerDown($event)"
-        (pointermove)="onTrackPointerMove($event)"
-        (pointerup)="onTrackPointerUp()"
-        (pointercancel)="onTrackPointerUp()"
-      >
-        <div class="sim-track-fill" [style.height.%]="sliderFraction * 100"></div>
-        <div class="sim-handle" [style.bottom.%]="sliderFraction * 100"></div>
+      <div class="sim-track-wrap">
+        <input
+          type="range"
+          class="sim-slider"
+          aria-label="Simüle edilen gün"
+          [min]="minOffset"
+          [max]="maxOffset"
+          step="1"
+          [value]="dayOffset"
+          (input)="onOffsetChange($any($event.target).value)"
+        />
       </div>
-    </div>
-
-    <div class="sim-scenarios">
-      @for (s of scenarios; track s.label) {
-        <button type="button" class="sim-chip" [class.active]="isActiveScenario(s)" (click)="applyScenario(s)">
-          {{ s.label }}
-        </button>
-      }
     </div>
 
     <button type="button" class="sim-reset" (click)="resetToReal()">

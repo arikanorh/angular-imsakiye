@@ -1,13 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
 import { SimTimeService } from '../sim-time.service';
-
-interface SimScenario {
-  label: string;
-  date: moment.Moment;
-}
 
 const AY_ADLARI_TR = [
   'Ocak',
@@ -24,6 +19,9 @@ const AY_ADLARI_TR = [
   'Aralık',
 ];
 
+const DAYS_BEFORE = 60;
+const DAYS_AFTER = 5;
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -31,17 +29,16 @@ const AY_ADLARI_TR = [
   standalone: false,
 })
 export class AdminPanelComponent implements OnInit, OnDestroy {
-  @ViewChild('track') trackRef: ElementRef<HTMLDivElement>;
-
   isOpen = false;
-  private dragging = false;
 
-  selectedMoment: moment.Moment;
   timeOfDay = '10:00';
+  dayOffset = -DAYS_BEFORE;
 
-  rangeStart: moment.Moment;
-  rangeEnd: moment.Moment;
-  scenarios: SimScenario[] = [];
+  minOffset = -DAYS_BEFORE;
+  maxOffset: number;
+
+  private ramadanStart: moment.Moment;
+  private totalDays: number;
 
   private refreshTimer;
 
@@ -50,23 +47,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     public simTime: SimTimeService
   ) {
     const data = imsakiye[this.cityService.city];
-    const first = moment(data[0].date, 'YYYY-MM-DD');
-    const last = moment(data[data.length - 1].date, 'YYYY-MM-DD');
-
-    this.rangeStart = first.clone().subtract(45, 'days');
-    this.rangeEnd = last.clone().add(10, 'days');
-
-    this.scenarios = [
-      { label: '40 gün kala', date: first.clone().subtract(40, 'days').hour(10).minute(0) },
-      { label: '15 gün kala', date: first.clone().subtract(15, 'days').hour(10).minute(0) },
-      { label: '1 gün kala', date: first.clone().subtract(1, 'days').hour(10).minute(0) },
-      { label: 'Ramazan 1. gün', date: first.clone().hour(10).minute(0) },
-      { label: 'Ramazan 3. gün', date: first.clone().add(2, 'days').hour(10).minute(0) },
-      { label: 'Ramazan 15. gün', date: first.clone().add(14, 'days').hour(10).minute(0) },
-      { label: 'Bitişten sonra', date: last.clone().add(5, 'days').hour(10).minute(0) },
-    ];
-
-    this.selectedMoment = this.rangeStart.clone().hour(10).minute(0);
+    this.ramadanStart = moment(data[0].date, 'YYYY-MM-DD');
+    this.totalDays = data.length;
+    this.maxOffset = this.totalDays - 1 + DAYS_AFTER;
   }
 
   ngOnInit() {
@@ -85,10 +68,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.isOpen = !this.isOpen;
   }
 
-  get sliderFraction(): number {
-    const total = this.rangeEnd.diff(this.rangeStart);
-    const elapsed = this.selectedMoment.diff(this.rangeStart);
-    return Math.min(1, Math.max(0, elapsed / total));
+  private get selectedMoment(): moment.Moment {
+    const [h, m] = this.timeOfDay.split(':').map(Number);
+    return this.ramadanStart
+      .clone()
+      .add(this.dayOffset, 'days')
+      .hour(h || 0)
+      .minute(m || 0)
+      .second(0);
   }
 
   get readoutDate(): string {
@@ -96,13 +83,18 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()}`;
   }
 
-  isActiveScenario(s: SimScenario): boolean {
-    return this.selectedMoment.format('YYYY-MM-DD') === s.date.format('YYYY-MM-DD');
+  get statusLabel(): string {
+    if (this.dayOffset < 0) {
+      return `Ramazan'a ${-this.dayOffset} gün kala`;
+    }
+    if (this.dayOffset < this.totalDays) {
+      return `Ramazan'ın ${this.dayOffset + 1}. günü`;
+    }
+    return `Bitişten ${this.dayOffset - this.totalDays + 1} gün sonra`;
   }
 
-  applyScenario(s: SimScenario) {
-    this.selectedMoment = s.date.clone();
-    this.timeOfDay = this.selectedMoment.format('HH:mm');
+  onOffsetChange(value: string) {
+    this.dayOffset = Number(value);
     this.simTime.set(this.selectedMoment);
   }
 
@@ -110,48 +102,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (!value) {
       return;
     }
-    const [h, m] = value.split(':').map(Number);
-    this.selectedMoment = this.selectedMoment.clone().hour(h).minute(m).second(0);
+    this.timeOfDay = value;
     this.simTime.set(this.selectedMoment);
   }
 
   resetToReal() {
-    this.selectedMoment = moment();
-    this.timeOfDay = this.selectedMoment.format('HH:mm');
+    this.dayOffset = -DAYS_BEFORE;
+    this.timeOfDay = '10:00';
     this.simTime.reset();
-  }
-
-  onTrackPointerDown(event: PointerEvent) {
-    this.dragging = true;
-    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
-    this.updateFromPointer(event);
-  }
-
-  onTrackPointerMove(event: PointerEvent) {
-    if (!this.dragging) {
-      return;
-    }
-    this.updateFromPointer(event);
-  }
-
-  onTrackPointerUp() {
-    this.dragging = false;
-  }
-
-  private updateFromPointer(event: PointerEvent) {
-    const rect = this.trackRef.nativeElement.getBoundingClientRect();
-    const relY = event.clientY - rect.top;
-    const fractionFromTop = Math.min(1, Math.max(0, relY / rect.height));
-    const fraction = 1 - fractionFromTop;
-    const totalMs = this.rangeEnd.diff(this.rangeStart);
-
-    const [h, m] = this.timeOfDay.split(':').map(Number);
-    this.selectedMoment = this.rangeStart
-      .clone()
-      .add(totalMs * fraction, 'milliseconds')
-      .hour(h || 0)
-      .minute(m || 0)
-      .second(0);
-    this.simTime.set(this.selectedMoment);
   }
 }
