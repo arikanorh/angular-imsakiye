@@ -1,6 +1,7 @@
 // Bu dosya `npm run build`/`npm start` öncesinde otomatik olarak
 // scripts/generate-build-info.mjs tarafından yeniden üretilir.
 export const buildInfo = {
-  version: 'v0.0.1',
-  timestamp: '2026-09-18T08:30:24.565Z',
+  version: 'v0.0.4',
+  branch: 'unbuilt',
+  timestamp: 'unbuilt',
 };

@@ -36,5 +36,11 @@
       </select>
     </div>
   </div>
-  <div class="build-info">{{ buildVersion }} · {{ buildTimestamp }}</div>
+  <div class="build-info">{{ buildVersion }} · {{ buildBranch }} · {{ buildTimestamp }}</div>
+  @if (updateAvailable) {
+    <div class="update-toast">
+      <span>Yeni bir sürüm mevcut.</span>
+      <button (click)="reloadForUpdate()">Yenile</button>
+    </div>
+  }
 </div>

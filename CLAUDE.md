@@ -12,3 +12,10 @@ projesi, https://imsa-kiye.web.app) deploy ediliyor — bkz. README.md
   ne kadar küçük olsa da. Bu sürüm, sayfanın sağ altındaki build
   bilgisi rozetinde (`src/app/build-info.ts`, `scripts/generate-build-info.mjs`
   tarafından her build öncesi otomatik üretilir) gösteriliyor.
+- **Karmaşık istekler bir branch'te (+ PR) yapılır; basit/küçük
+  istekler doğrudan `master`'a commit edilip push'lanır.**
+- **Karmaşık/riskli değişiklikler kullanıcı test etmeden merge
+  edilmez.** Production'a (`imsa-kiye.web.app`) deploy etmeden önce
+  bir Firebase Hosting preview channel'ına deploy et
+  (`firebase hosting:channel:deploy <isim>`), preview URL'sini
+  kullanıcıya ver, onay gelmeden merge/production deploy yapma.
