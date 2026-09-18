@@ -1,8 +1,8 @@
 {
   "name": "İmsakiye",
   "short_name": "İmsakiye",
-  "theme_color": "#abdbe3",
-  "background_color": "#abdbe3",
+  "theme_color": "#0f7b6c",
+  "background_color": "#eaf6f4",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

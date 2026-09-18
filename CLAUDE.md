@@ -19,3 +19,23 @@ projesi, https://imsa-kiye.web.app) deploy ediliyor — bkz. README.md
   bir Firebase Hosting preview channel'ına deploy et
   (`firebase hosting:channel:deploy <isim>`), preview URL'sini
   kullanıcıya ver, onay gelmeden merge/production deploy yapma.
+
+## Bu ortamda (remote/CLI sandbox) test etme notları
+
+- Sistem `node` sürümü (`/opt/node22`) Angular CLI'nin istediği
+  minimum sürümden bir patch geride olabilir ("Node.js version X
+  detected... minimum v22.22.3" hatası). Çözüm: `/opt/nvm` altındaki
+  nvm ile daha yeni bir sürüm kurup kullan:
+  `export NVM_DIR=/opt/nvm/.nvm; source /opt/nvm/nvm.sh; nvm install 22.22.3; nvm use 22.22.3`.
+- UI değişikliklerini görsel olarak doğrularken **`chrome --headless
+  --screenshot=...` CLI bayrağını kullanma** — bu eski headless mod
+  layout'u güvenilmez render ediyor (flex/overflow hesapları bozuk
+  çıkabiliyor, örn. gerçekte taşmayan bir öğe taşıyormuş gibi
+  görünebiliyor). Bunun yerine global kurulu Playwright'ı kullan:
+  `require('/opt/node22/lib/node_modules/playwright')` ile
+  `chromium.launch({ executablePath:
+  '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args:
+  ['--no-sandbox'] })`, sonra `page.screenshot(...)` — bu, gerçek
+  layout'u doğru yansıtıyor. `ignoreHTTPSErrors: true` proxy/CA
+  sertifika hatalarını (Google Fonts vb. dış istekler) aşmak için
+  gerekebilir.
