@@ -1,8 +1,21 @@
 <div class="page-wrapper">
   <div class="phone-frame">
 
-    <div class="header-row">
-      <div class="app-title">İmsakiye</div>
+    <div class="page-scroll">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-group">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="tab-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5" /></svg>
+          Bugün
+        </a>
+        <a routerLink="/takvim" routerLinkActive="active" class="tab-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3" /><path d="M3 9h18" /></svg>
+          Takvim
+        </a>
+      </div>
       <div class="city-picker">
         <label for="city" class="sr-only">Şehir seç</label>
         <select id="city" [(ngModel)]="city">
@@ -12,23 +25,10 @@
             </option>
           }
         </select>
-        <svg class="chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 9l6 6 6-6" />
         </svg>
       </div>
-    </div>
-
-    <router-outlet></router-outlet>
-
-    <div class="tab-bar">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="tab-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5" /></svg>
-        Bugün
-      </a>
-      <a routerLink="/takvim" routerLinkActive="active" class="tab-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3" /><path d="M3 9h18" /></svg>
-        Takvim
-      </a>
     </div>
 
     <div class="build-info">{{ buildVersion }} · {{ buildBranch }} · {{ buildTimestamp }}</div>
