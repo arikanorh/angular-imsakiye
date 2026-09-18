@@ -1,3 +1,7 @@
+:host {
+  display: block;
+}
+
 .takvim-list {
   display: flex;
   flex-direction: column;
