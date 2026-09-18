@@ -156,9 +156,12 @@ export class TodayComponent implements OnInit, OnDestroy {
     if (this.showRamadanCountdown) {
       this.todayShortLabel = this.formatShortDate(todayDateTime);
       this.ramadanStartShortLabel = this.formatShortDate(ramadanStartDateTime);
+      // 30 günden fazla kala 365 gün üzerinden, 30 günden az kala ise
+      // (daha belirgin bir ilerleme hissi için) 30 gün üzerinden ölçekle.
+      let scale = this.daysUntilRamadan > 30 ? 365 : 30;
       this.ramadanProgressPercent = Math.min(
         100,
-        Math.max(0, ((365 - this.daysUntilRamadan) / 365) * 100)
+        Math.max(0, ((scale - this.daysUntilRamadan) / scale) * 100)
       );
     }
 
