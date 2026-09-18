@@ -1,0 +1,65 @@
+<button
+  type="button"
+  class="sim-fab"
+  [class.simulating]="simTime.isActive"
+  (click)="toggleOpen()"
+  aria-label="Zaman simülasyonu"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 3" />
+  </svg>
+</button>
+
+@if (isOpen) {
+  <div class="sim-panel">
+    <div class="sim-panel-header">
+      <div class="sim-title">Zaman Simülasyonu</div>
+      <button type="button" class="sim-close" (click)="toggleOpen()" aria-label="Kapat">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="sim-readout">
+      <div class="sim-date">{{ readoutDate }}</div>
+      <input
+        type="time"
+        class="sim-time-input"
+        aria-label="Saat"
+        [(ngModel)]="timeOfDay"
+        (ngModelChange)="onTimeChange($event)"
+      />
+    </div>
+
+    <div class="sim-slider-row">
+      <div
+        class="sim-track-wrap"
+        #track
+        (pointerdown)="onTrackPointerDown($event)"
+        (pointermove)="onTrackPointerMove($event)"
+        (pointerup)="onTrackPointerUp()"
+        (pointercancel)="onTrackPointerUp()"
+      >
+        <div class="sim-track-fill" [style.height.%]="sliderFraction * 100"></div>
+        <div class="sim-handle" [style.bottom.%]="sliderFraction * 100"></div>
+      </div>
+    </div>
+
+    <div class="sim-scenarios">
+      @for (s of scenarios; track s.label) {
+        <button type="button" class="sim-chip" [class.active]="isActiveScenario(s)" (click)="applyScenario(s)">
+          {{ s.label }}
+        </button>
+      }
+    </div>
+
+    <button type="button" class="sim-reset" (click)="resetToReal()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 1 3 6.7M3 12v5h5" />
+      </svg>
+      Gerçek zamana dön
+    </button>
+  </div>
+}

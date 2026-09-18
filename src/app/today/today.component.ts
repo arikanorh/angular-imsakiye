@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
+import { SimTimeService } from '../sim-time.service';
 
 const AY_ADLARI_TR = [
   'Ocak',
@@ -52,9 +53,13 @@ export class TodayComponent implements OnInit, OnDestroy {
   ramadanStartShortLabel = '';
 
   private citySub: Subscription;
+  private simTimeSub: Subscription;
   private timer;
 
-  constructor(private cityService: CityService) {}
+  constructor(
+    private cityService: CityService,
+    private simTime: SimTimeService
+  ) {}
 
   get city(): string {
     return this.cityService.city;
@@ -82,11 +87,12 @@ export class TodayComponent implements OnInit, OnDestroy {
   }
 
   private formatShortDate(m: moment.Moment): string {
-    return `${m.date()} ${AY_ADLARI_TR[m.month()].slice(0, 3)}`;
+    return `${m.date()} ${AY_ADLARI_TR[m.month()].slice(0, 3)} ${m.year()}`;
   }
 
   ngOnInit() {
     this.citySub = this.cityService.city$.subscribe(() => this.calc());
+    this.simTimeSub = this.simTime.override$.subscribe(() => this.calc());
 
     this.timer = setInterval(() => this.calc(), 1000);
     this.calc();
@@ -96,6 +102,9 @@ export class TodayComponent implements OnInit, OnDestroy {
     if (this.citySub) {
       this.citySub.unsubscribe();
     }
+    if (this.simTimeSub) {
+      this.simTimeSub.unsubscribe();
+    }
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -104,7 +113,7 @@ export class TodayComponent implements OnInit, OnDestroy {
   calc() {
     let data = this.datas[this.cityService.city];
     let format = 'YYYY-MM-DD HH:mm:ss';
-    let todayDateTime = moment();
+    let todayDateTime = this.simTime.now();
 
     let todayDate = todayDateTime.format('YYYY-MM-DD');
     this.ramadanStarted = todayDate >= data[0].date;

@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
+import { SimTimeService } from '../sim-time.service';
 
 const AY_ADLARI_TR = [
   'Ocak',
@@ -51,23 +52,31 @@ export class TakvimComponent implements OnInit, OnDestroy {
   days: TakvimGunu[] = [];
 
   private citySub: Subscription;
+  private simTimeSub: Subscription;
 
-  constructor(private cityService: CityService) {}
+  constructor(
+    private cityService: CityService,
+    private simTime: SimTimeService
+  ) {}
 
   ngOnInit() {
     this.citySub = this.cityService.city$.subscribe(() => this.buildDays());
+    this.simTimeSub = this.simTime.override$.subscribe(() => this.buildDays());
   }
 
   ngOnDestroy() {
     if (this.citySub) {
       this.citySub.unsubscribe();
     }
+    if (this.simTimeSub) {
+      this.simTimeSub.unsubscribe();
+    }
   }
 
   private buildDays() {
     this.city = this.cityService.city;
     let data = imsakiye[this.city];
-    let todayDateTime = moment();
+    let todayDateTime = this.simTime.now();
     let todayDate = todayDateTime.format('YYYY-MM-DD');
 
     this.days = data.map((item) => {
