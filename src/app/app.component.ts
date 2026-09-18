@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { imsakiye } from './imsakiye';
+import { buildInfo } from './build-info';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
@@ -22,6 +23,12 @@ export class AppComponent implements OnInit {
   @ViewChild('city') cityElement: ElementRef;
   datas = imsakiye;
   cities = Object.keys(this.datas);
+
+  buildVersion = buildInfo.version;
+  buildTimestamp =
+    buildInfo.timestamp === 'unbuilt'
+      ? buildInfo.timestamp
+      : moment(buildInfo.timestamp).format('YYYY-MM-DD HH:mm');
 
   day: string = '';
   date = '';

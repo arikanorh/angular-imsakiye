@@ -74,3 +74,11 @@
 .city select {
   font-size: 20px;
 }
+
+.build-info {
+  position: fixed;
+  right: 8px;
+  bottom: 4px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+}
