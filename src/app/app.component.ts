@@ -13,6 +13,21 @@ import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
+const AY_ADLARI_TR = [
+  'Ocak',
+  'Şubat',
+  'Mart',
+  'Nisan',
+  'Mayıs',
+  'Haziran',
+  'Temmuz',
+  'Ağustos',
+  'Eylül',
+  'Ekim',
+  'Kasım',
+  'Aralık',
+];
+
 @Component({
     selector: 'my-app',
     templateUrl: './app.component.html',
@@ -37,8 +52,11 @@ export class AppComponent implements OnInit {
   start = '';
   end = '';
   remaining;
+  remainingLabel = '';
   sahurPassed;
   iftarPassed;
+  progressPercent = 0;
+  dayProgressPercent = 0;
 
   city: string;
 
@@ -56,6 +74,19 @@ export class AppComponent implements OnInit {
 
   reloadForUpdate() {
     document.location.reload();
+  }
+
+  get progressGradient(): string {
+    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.progressPercent}%, #d8e6e2 ${this.progressPercent}%, #d8e6e2 100%)`;
+  }
+
+  get trackDotPercent(): number {
+    // Uçlardaki sahur/iftar ikonlarıyla çakışmasın diye görsel olarak içeri çekiyoruz.
+    return Math.min(94, Math.max(6, this.progressPercent));
+  }
+
+  private formatDisplayDate(m: moment.Moment): string {
+    return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()} · ${m.format('HH:mm:ss')}`;
   }
 
   private watchForUpdates() {
@@ -128,13 +159,16 @@ export class AppComponent implements OnInit {
     if (iftarPassed && !next) {
       // Takvimdeki son günün iftarı geçti; bir sonraki gün verisi yok
       // (Ramazan bitti). Sayacı burada dondurup çökmeyi/NaN'i önlüyoruz.
-      this.date = todayDateTime.format(format);
+      this.date = this.formatDisplayDate(todayDateTime);
       this.day = today.day + '/' + data.length;
       this.start = today.start;
       this.end = today.end;
       this.sahurPassed = true;
       this.iftarPassed = true;
       this.remaining = '00:00:00';
+      this.remainingLabel = 'İftara kalan';
+      this.progressPercent = 100;
+      this.dayProgressPercent = (Number(today.day) / data.length) * 100;
       return;
     }
 
@@ -150,10 +184,12 @@ export class AppComponent implements OnInit {
     sahurDateTime = moment(sahurDateTimeStr, format);
     iftarDateTime = moment(iftarDateTimeStr, format);
 
-    this.date = todayDateTime.format(format);
+    this.date = this.formatDisplayDate(todayDateTime);
     this.day = today.day + '/' + this.datas[this.city].length;
     this.start = today.start;
     this.end = today.end;
+    this.dayProgressPercent =
+      (Number(today.day) / this.datas[this.city].length) * 100;
 
     sahurPassed = todayDateTime.isAfter(sahurDateTime);
     iftarPassed = todayDateTime.isAfter(iftarDateTime);
@@ -166,10 +202,16 @@ export class AppComponent implements OnInit {
       this.iftarPassed = iftarPassed;
     }
 
+    let totalSpan = iftarDateTime.diff(sahurDateTime);
+    let elapsed = todayDateTime.diff(sahurDateTime);
+    let progress = totalSpan > 0 ? (elapsed / totalSpan) * 100 : 0;
+    this.progressPercent = Math.min(100, Math.max(0, progress));
+
     let subjectDateTime = sahurDateTime;
     if (sahurPassed) {
       subjectDateTime = iftarDateTime;
     }
+    this.remainingLabel = sahurPassed ? 'İftara kalan' : 'Sahura kalan';
     this.remaining = this.convertToXXHoursYYMinutes(
       moment.duration(subjectDateTime.diff(todayDateTime)).as('seconds')
     );
