@@ -1,6 +1,6 @@
 {
   "name": "angular",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "dependencies": {
     "@angular/animations": "^22.1.7",
@@ -11,6 +11,7 @@
     "@angular/platform-browser": "^22.1.7",
     "@angular/platform-browser-dynamic": "^22.1.7",
     "@angular/router": "^22.1.7",
+    "@angular/service-worker": "^22.1.7",
     "core-js": "^3.29.1",
     "moment": "^2.29.4",
     "ngx-cookie-service": "^22.0.0",

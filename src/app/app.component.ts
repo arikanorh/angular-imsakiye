@@ -11,6 +11,10 @@ import { buildInfo } from './build-info';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { filter } from 'rxjs/operators';
+
+const UPDATE_CHECK_INTERVAL_MS = 30 * 60 * 1000;
 
 @Component({
     selector: 'my-app',
@@ -25,6 +29,7 @@ export class AppComponent implements OnInit {
   cities = Object.keys(this.datas);
 
   buildVersion = buildInfo.version;
+  buildBranch = buildInfo.branch;
   buildTimestamp =
     buildInfo.timestamp === 'unbuilt'
       ? buildInfo.timestamp
@@ -40,16 +45,45 @@ export class AppComponent implements OnInit {
 
   city: string;
 
+  updateAvailable = false;
+
   constructor(
     private cookieService: CookieService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private swUpdate: SwUpdate
   ) {}
 
   selectCity(e) {
     this.cookieService.set('city', this.city);
   }
 
+  reloadForUpdate() {
+    document.location.reload();
+  }
+
+  private watchForUpdates() {
+    if (!this.swUpdate.isEnabled) {
+      return;
+    }
+
+    this.swUpdate.versionUpdates
+      .pipe(
+        filter(
+          (event): event is VersionReadyEvent => event.type === 'VERSION_READY'
+        )
+      )
+      .subscribe(() => {
+        this.updateAvailable = true;
+      });
+
+    setInterval(() => {
+      this.swUpdate.checkForUpdate();
+    }, UPDATE_CHECK_INTERVAL_MS);
+  }
+
   ngOnInit() {
+    this.watchForUpdates();
+
     this.route.queryParams.subscribe((e) => {
       if (e.city) {
         this.city = e.city;
