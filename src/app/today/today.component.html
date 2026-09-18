@@ -43,6 +43,7 @@
     </div>
   }
 
+  @if (!showRamadanCountdown) {
   <div class="timeline-card">
     <div class="timeline-track-wrapper">
       <div class="timeline-track" [style.background]="progressGradient"></div>
@@ -80,6 +81,7 @@
       </div>
     </div>
   </div>
+  }
 
   @if (showRemainingCountdown) {
     <div class="remaining">
