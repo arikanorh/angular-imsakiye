@@ -93,7 +93,7 @@ export class TakvimComponent implements OnInit, OnDestroy {
         weekdayLabel: GUN_ADLARI_TR[m.day()],
         start: item.start,
         end: item.end,
-        durationLabel: `${hours}s ${String(minutes).padStart(2, '0')}dk`,
+        durationLabel: `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`,
         isToday: item.date === todayDate,
         isPast: m.isBefore(todayDateTime, 'day'),
       };
