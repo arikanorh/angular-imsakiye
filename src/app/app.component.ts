@@ -11,10 +11,7 @@ import { buildInfo } from './build-info';
 import moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
-import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { filter } from 'rxjs/operators';
-
-const UPDATE_CHECK_INTERVAL_MS = 30 * 60 * 1000;
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
     selector: 'my-app',
@@ -66,19 +63,13 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.swUpdate.versionUpdates
-      .pipe(
-        filter(
-          (event): event is VersionReadyEvent => event.type === 'VERSION_READY'
-        )
-      )
-      .subscribe(() => {
+    this.swUpdate.versionUpdates.subscribe((event) => {
+      if (event.type === 'VERSION_READY') {
         this.updateAvailable = true;
-      });
+      }
+    });
 
-    setInterval(() => {
-      this.swUpdate.checkForUpdate();
-    }, UPDATE_CHECK_INTERVAL_MS);
+    this.swUpdate.checkForUpdate();
   }
 
   ngOnInit() {
