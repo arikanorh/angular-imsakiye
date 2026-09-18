@@ -120,6 +120,14 @@ export class AppComponent implements OnInit {
     });
 
     this.swUpdate.checkForUpdate();
+
+    // iOS'ta PWA arka plandan öne geldiğinde de tekrar kontrol et
+    // (sekme uzun süre açık/askıda kalmış olabilir).
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.swUpdate.checkForUpdate();
+      }
+    });
   }
 
   ngOnInit() {
