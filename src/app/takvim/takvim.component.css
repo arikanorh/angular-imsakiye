@@ -1,0 +1,103 @@
+:host {
+  display: block;
+}
+
+.takvim-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 6px 0 20px;
+}
+
+.takvim-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 2px;
+  border-bottom: 1px solid #d8e6e2;
+  transition: opacity 0.2s ease;
+}
+
+.takvim-row:last-child {
+  border-bottom: none;
+}
+
+.takvim-row.today {
+  background: rgba(15, 123, 108, 0.08);
+  border-radius: 14px;
+  padding: 12px 12px;
+  margin: 0 -10px;
+  border-bottom: none;
+}
+
+.takvim-row.past {
+  opacity: 0.45;
+}
+
+.takvim-day-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #d8e6e2;
+  color: #0f7b6c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  flex: none;
+}
+
+.takvim-row.today .takvim-day-badge {
+  background: #0f7b6c;
+  color: #ffffff;
+}
+
+.takvim-date {
+  flex: 1;
+  min-width: 0;
+}
+
+.takvim-date .d1 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f2b26;
+}
+
+.takvim-date .d2 {
+  font-size: 11px;
+  color: #5c6b66;
+  margin-top: 2px;
+}
+
+.takvim-row.today .takvim-date .d2 {
+  color: #0f7b6c;
+  font-weight: 700;
+}
+
+.takvim-times {
+  display: flex;
+  gap: 16px;
+  flex: none;
+}
+
+.takvim-times .t {
+  text-align: right;
+}
+
+.takvim-times .l {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5c6b66;
+}
+
+.takvim-times .v {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f2b26;
+  margin-top: 2px;
+}
