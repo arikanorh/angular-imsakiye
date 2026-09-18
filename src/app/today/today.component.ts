@@ -222,6 +222,16 @@ export class TodayComponent implements OnInit, OnDestroy {
     let totalSpan = iftarDateTime.diff(sahurDateTime);
     let elapsed = todayDateTime.diff(sahurDateTime);
     let progress = totalSpan > 0 ? (elapsed / totalSpan) * 100 : 0;
+
+    if (!this.ramadanStarted && !this.showRamadanCountdown && !sahurPassed) {
+      // İlk sahura henüz ulaşılmadı; sahur-iftar aralığına göre hesap
+      // hep 0'da takılı kalır. Bunun yerine ilk sahura kalan son 24
+      // saatlik pencere üzerinden ilerlet.
+      let windowStart = sahurDateTime.clone().subtract(24, 'hours');
+      let windowElapsed = todayDateTime.diff(windowStart);
+      progress = (windowElapsed / (24 * 60 * 60 * 1000)) * 100;
+    }
+
     this.progressPercent = Math.min(100, Math.max(0, progress));
 
     let subjectDateTime = sahurDateTime;
