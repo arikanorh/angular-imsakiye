@@ -20,6 +20,37 @@
 
     <div class="content">
 
+      @if (showRamadanCountdown) {
+        <div class="ramadan-countdown-card">
+          <div class="label-eyebrow">Ramazan'a Kalan</div>
+          <div class="ramadan-track-wrapper">
+            <div class="ramadan-track" [style.background]="ramadanProgressGradient"></div>
+            <svg class="ramadan-track-icon start" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+            <svg class="ramadan-track-icon end" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5Z" />
+            </svg>
+            <div class="ramadan-track-dot" [style.left.%]="ramadanTrackDotPercent"></div>
+          </div>
+          <div class="ramadan-track-labels">
+            <div>
+              <div class="label-eyebrow small">Bugün</div>
+              <div class="ramadan-track-value">{{ todayShortLabel }}</div>
+            </div>
+            <div class="right">
+              <div class="label-eyebrow small">Ramazan</div>
+              <div class="ramadan-track-value">{{ ramadanStartShortLabel }}</div>
+            </div>
+          </div>
+          <div class="ramadan-countdown-headline">
+            <span class="ramadan-countdown-number">{{ daysUntilRamadan }}</span>
+            <span class="label-eyebrow">gün kaldı</span>
+          </div>
+        </div>
+      }
+
       <div class="timeline-card">
         <div class="timeline-track-wrapper">
           <div class="timeline-track" [style.background]="progressGradient"></div>

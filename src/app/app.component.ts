@@ -58,6 +58,12 @@ export class AppComponent implements OnInit {
   progressPercent = 0;
   dayProgressPercent = 0;
 
+  showRamadanCountdown = false;
+  daysUntilRamadan = 0;
+  ramadanProgressPercent = 0;
+  todayShortLabel = '';
+  ramadanStartShortLabel = '';
+
   city: string;
 
   updateAvailable = false;
@@ -85,8 +91,20 @@ export class AppComponent implements OnInit {
     return Math.min(94, Math.max(6, this.progressPercent));
   }
 
+  get ramadanTrackDotPercent(): number {
+    return Math.min(94, Math.max(6, this.ramadanProgressPercent));
+  }
+
+  get ramadanProgressGradient(): string {
+    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.ramadanProgressPercent}%, #d8e6e2 ${this.ramadanProgressPercent}%, #d8e6e2 100%)`;
+  }
+
   private formatDisplayDate(m: moment.Moment): string {
     return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()} · ${m.format('HH:mm:ss')}`;
+  }
+
+  private formatShortDate(m: moment.Moment): string {
+    return `${m.date()} ${AY_ADLARI_TR[m.month()].slice(0, 3)}`;
   }
 
   private watchForUpdates() {
@@ -147,6 +165,23 @@ export class AppComponent implements OnInit {
 
     let today = data[index];
     let next = data[index + 1];
+
+    let ramadanStartDateTime = moment(
+      data[0].date + ' ' + data[0].start,
+      format
+    );
+    this.daysUntilRamadan = Math.ceil(
+      moment.duration(ramadanStartDateTime.diff(todayDateTime)).asDays()
+    );
+    this.showRamadanCountdown = this.daysUntilRamadan > 30;
+    if (this.showRamadanCountdown) {
+      this.todayShortLabel = this.formatShortDate(todayDateTime);
+      this.ramadanStartShortLabel = this.formatShortDate(ramadanStartDateTime);
+      this.ramadanProgressPercent = Math.min(
+        100,
+        Math.max(0, ((365 - this.daysUntilRamadan) / 365) * 100)
+      );
+    }
 
     let sahurDateTimeStr = today.date + ' ' + today.start;
     let iftarDateTimeStr = today.date + ' ' + today.end;
