@@ -102,14 +102,32 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (!value) {
       return;
     }
-    // Saat girişindeki dakika/saat okları 59->00 ya da 23->00'a sararsa
-    // (yani yeni değer eskisinden küçükse) bir sonraki güne geçilmiş
-    // demektir; gün kaydırıcısını da buna göre ilerlet.
+    // Saat okla artırılıp 23:59->00:00'a sarıyorsa bir sonraki güne,
+    // azaltılıp 00:00->23:59'a sarıyorsa bir önceki güne geçilmiş demektir.
+    // Hangisi olduğunu ayırt etmek için gece yarısını "saran" mesafe ile
+    // aynı gün içindeki düz mesafeyi karşılaştırıp kısa olanı seçiyoruz;
+    // böylece aynı gün içindeki küçük ileri/geri oynatmalar gün
+    // kaydırıcısını yanlışlıkla değiştirmiyor.
+    const DAY_MINUTES = 24 * 60;
     const [newH, newM] = value.split(':').map(Number);
     const [oldH, oldM] = this.timeOfDay.split(':').map(Number);
-    if (newH * 60 + newM < oldH * 60 + oldM) {
-      this.dayOffset = Math.min(this.maxOffset, this.dayOffset + 1);
+    const oldTotal = oldH * 60 + oldM;
+    const newTotal = newH * 60 + newM;
+
+    if (newTotal < oldTotal) {
+      const forwardWrapDist = DAY_MINUTES - oldTotal + newTotal;
+      const sameDayDist = oldTotal - newTotal;
+      if (forwardWrapDist < sameDayDist) {
+        this.dayOffset = Math.min(this.maxOffset, this.dayOffset + 1);
+      }
+    } else if (newTotal > oldTotal) {
+      const backwardWrapDist = oldTotal + (DAY_MINUTES - newTotal);
+      const sameDayDist = newTotal - oldTotal;
+      if (backwardWrapDist < sameDayDist) {
+        this.dayOffset = Math.max(this.minOffset, this.dayOffset - 1);
+      }
     }
+
     this.timeOfDay = value;
     this.simTime.set(this.selectedMoment);
   }
