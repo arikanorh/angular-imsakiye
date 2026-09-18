@@ -120,7 +120,10 @@ export class TodayComponent implements OnInit, OnDestroy {
     this.daysUntilRamadan = Math.ceil(
       moment.duration(ramadanStartDateTime.diff(todayDateTime)).asDays()
     );
-    this.showRamadanCountdown = this.daysUntilRamadan > 30;
+    // İlk sahura 24 saatten az kalınca (daysUntilRamadan <= 1) bu kart
+    // yerini alttaki canlı "sahura kalan" sayacına bırakır; o aralığa
+    // kadar Ramazan'a kalan tüm günlerde bu kart gösterilir.
+    this.showRamadanCountdown = this.daysUntilRamadan > 1;
     if (this.showRamadanCountdown) {
       this.todayShortLabel = this.formatShortDate(todayDateTime);
       this.ramadanStartShortLabel = this.formatShortDate(ramadanStartDateTime);
