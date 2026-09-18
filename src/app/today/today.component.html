@@ -76,15 +76,17 @@
     </div>
   }
 
-  <div class="day-progress">
-    <div class="day-progress-header">
-      <div>RAMAZAN İLERLEMESİ</div>
-      <div class="day-progress-count">{{ day }}</div>
+  @if (ramadanStarted) {
+    <div class="day-progress">
+      <div class="day-progress-header">
+        <div>RAMAZAN İLERLEMESİ</div>
+        <div class="day-progress-count">{{ day }}</div>
+      </div>
+      <div class="day-progress-track">
+        <div class="day-progress-fill" [style.width.%]="dayProgressPercent"></div>
+      </div>
     </div>
-    <div class="day-progress-track">
-      <div class="day-progress-fill" [style.width.%]="dayProgressPercent"></div>
-    </div>
-  </div>
+  }
 
 </div>
 

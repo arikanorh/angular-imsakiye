@@ -42,6 +42,7 @@ export class TodayComponent implements OnInit, OnDestroy {
   dayProgressPercent = 0;
 
   showRamadanCountdown = false;
+  ramadanStarted = false;
   daysUntilRamadan = 0;
   ramadanProgressPercent = 0;
   todayShortLabel = '';
@@ -99,6 +100,7 @@ export class TodayComponent implements OnInit, OnDestroy {
     let todayDateTime = moment();
 
     let todayDate = todayDateTime.format('YYYY-MM-DD');
+    this.ramadanStarted = todayDate >= data[0].date;
 
     let index = 0;
     for (let i = 0; i < data.length; i++) {
