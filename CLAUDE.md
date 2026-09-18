@@ -19,6 +19,11 @@ projesi, https://imsa-kiye.web.app) deploy ediliyor — bkz. README.md
   bir Firebase Hosting preview channel'ına deploy et
   (`firebase hosting:channel:deploy <isim>`), preview URL'sini
   kullanıcıya ver, onay gelmeden merge/production deploy yapma.
+- **UI ile ilgili bir öneri istendiğinde her zaman 3-5 alternatif
+  görsel öneri hazırla** (Artifact olarak yayınlanmış, uygulamanın
+  gerçek renk/font/kart diliyle çizilmiş mockup'lar), kullanıcı birini
+  seçmeden uygulamaya geçme. Mockup dosyalarını `scratch/` altında
+  üret; yayınladıktan sonra sil, repo'ya commit etme.
 
 ## Bu ortamda (remote/CLI sandbox) test etme notları
 
