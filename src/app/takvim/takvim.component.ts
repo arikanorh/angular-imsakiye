@@ -36,6 +36,7 @@ interface TakvimGunu {
   weekdayLabel: string;
   start: string;
   end: string;
+  durationLabel: string;
   isToday: boolean;
   isPast: boolean;
 }
@@ -81,12 +82,18 @@ export class TakvimComponent implements OnInit, OnDestroy {
 
     this.days = data.map((item) => {
       let m = moment(item.date, 'YYYY-MM-DD');
+      let sahur = moment(item.date + ' ' + item.start, 'YYYY-MM-DD HH:mm');
+      let iftar = moment(item.date + ' ' + item.end, 'YYYY-MM-DD HH:mm');
+      let totalMinutes = iftar.diff(sahur, 'minutes');
+      let hours = Math.floor(totalMinutes / 60);
+      let minutes = totalMinutes % 60;
       return {
         day: item.day,
         dateLabel: `${m.date()} ${AY_ADLARI_TR[m.month()]}`,
         weekdayLabel: GUN_ADLARI_TR[m.day()],
         start: item.start,
         end: item.end,
+        durationLabel: `${hours}s ${String(minutes).padStart(2, '0')}dk`,
         isToday: item.date === todayDate,
         isPast: m.isBefore(todayDateTime, 'day'),
       };
