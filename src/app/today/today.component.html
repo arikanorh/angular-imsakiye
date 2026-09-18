@@ -27,11 +27,11 @@
         <div class="ramadan-track-dot" [style.left.%]="ramadanTrackDotPercent"></div>
       </div>
       <div class="ramadan-track-labels">
-        <div>
+        <div class="value-tile">
           <div class="label-eyebrow small">Bugün</div>
           <div class="ramadan-track-value">{{ todayShortLabel }}</div>
         </div>
-        <div class="right">
+        <div class="value-tile">
           <div class="label-eyebrow small">Ramazan</div>
           <div class="ramadan-track-value">{{ ramadanStartShortLabel }}</div>
         </div>
@@ -56,7 +56,7 @@
       <div class="track-now" [style.left.%]="trackDotPercent">ŞU AN</div>
     </div>
     <div class="timeline-labels">
-      <div class="timeline-label" [class.passed]="sahurPassed">
+      <div class="timeline-label value-tile" [class.passed]="sahurPassed">
         <div class="timeline-label-title">
           Sahur
           @if (sahurPassed) {
@@ -67,7 +67,7 @@
         </div>
         <div class="timeline-label-value">{{ start }}</div>
       </div>
-      <div class="timeline-label right" [class.passed]="iftarPassed">
+      <div class="timeline-label value-tile" [class.passed]="iftarPassed">
         <div class="timeline-label-title">
           @if (iftarPassed) {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">

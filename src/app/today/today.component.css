@@ -162,18 +162,26 @@
 
 .ramadan-track-labels {
   display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.ramadan-track-labels .right {
-  text-align: right;
+.value-tile {
+  flex: 1;
+  background: #d8e6e2;
+  border-radius: 16px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.value-tile .label-eyebrow.small {
+  color: #0f7b6c;
 }
 
 .ramadan-track-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #0f2b26;
 }
 
@@ -256,25 +264,18 @@
 
 .timeline-labels {
   display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .timeline-label-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  color: #5c6b66;
-}
-
-.timeline-label.right .timeline-label-title {
-  justify-content: flex-end;
-}
-
-.timeline-label.right {
-  text-align: right;
+  color: #0f7b6c;
 }
 
 .timeline-label.passed .timeline-label-title,
@@ -284,8 +285,8 @@
 
 .timeline-label-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #0f2b26;
 }
 
