@@ -80,7 +80,6 @@
         aria-label="Bir gün geri"
         (pointerdown)="startHold('day', -1, $event)"
         (pointerup)="stopHold()"
-        (pointerleave)="stopHold()"
         (pointercancel)="stopHold()"
         (contextmenu)="$event.preventDefault()"
       >−</button>
@@ -100,7 +99,6 @@
         aria-label="Bir gün ileri"
         (pointerdown)="startHold('day', 1, $event)"
         (pointerup)="stopHold()"
-        (pointerleave)="stopHold()"
         (pointercancel)="stopHold()"
         (contextmenu)="$event.preventDefault()"
       >+</button>
@@ -114,7 +112,6 @@
         aria-label="Beş dakika geri"
         (pointerdown)="startHold('time', -5, $event)"
         (pointerup)="stopHold()"
-        (pointerleave)="stopHold()"
         (pointercancel)="stopHold()"
         (contextmenu)="$event.preventDefault()"
       >−</button>
@@ -134,7 +131,6 @@
         aria-label="Beş dakika ileri"
         (pointerdown)="startHold('time', 5, $event)"
         (pointerup)="stopHold()"
-        (pointerleave)="stopHold()"
         (pointercancel)="stopHold()"
         (contextmenu)="$event.preventDefault()"
       >+</button>

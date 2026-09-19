@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
@@ -73,15 +73,54 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   /** − / + düğmesine basıldığında hemen bir adım atar; basılı tutulursa
-   *  kısa bir gecikmeden sonra bırakılana dek hızlı tekrar eder. */
+   *  kısa bir gecikmeden sonra bırakılana dek tekrar eder. Tekrar uzadıkça
+   *  hızlanır: gün için aralık kısalır, saat için adım 5 → 15 → 60 dakikaya
+   *  büyür ki bir günü basılı tutarak birkaç saniyede geçmek mümkün olsun. */
   startHold(kind: 'day' | 'time', delta: number, event: Event) {
     event.preventDefault();
     this.stopHold();
-    const step = () => (kind === 'day' ? this.stepDay(delta) : this.stepMinutes(delta));
+
+    // Parmak/işaretçi düğmeden hafifçe kaysa bile pointerup bize gelsin.
+    const target = event.target as HTMLElement | null;
+    const pointerId = (event as PointerEvent).pointerId;
+    if (target && typeof target.setPointerCapture === 'function' && pointerId !== undefined) {
+      try {
+        target.setPointerCapture(pointerId);
+      } catch {
+        // Bazı tarayıcılar yakalamayı reddedebilir; tekrar yine de çalışır.
+      }
+    }
+
+    let repeats = 0;
+    const direction = delta < 0 ? -1 : 1;
+    const step = () => {
+      repeats++;
+      if (kind === 'day') {
+        this.stepDay(direction);
+      } else {
+        const magnitude = repeats > 30 ? 60 : repeats > 10 ? 15 : 5;
+        this.stepMinutes(direction * magnitude);
+      }
+    };
+
     step();
     this.holdDelayTimer = setTimeout(() => {
-      this.holdRepeatTimer = setInterval(step, 90);
+      const tick = () => {
+        step();
+        const interval = repeats > 20 ? 50 : 90;
+        this.holdRepeatTimer = setTimeout(tick, interval);
+      };
+      tick();
     }, 400);
+  }
+
+  /** Parmak/işaretçi düğme dışında bırakılsa veya sekme arka plana
+   *  düşse bile tekrar durur. */
+  @HostListener('document:pointerup')
+  @HostListener('document:pointercancel')
+  @HostListener('window:blur')
+  onGlobalRelease() {
+    this.stopHold();
   }
 
   stopHold() {
@@ -90,7 +129,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       this.holdDelayTimer = null;
     }
     if (this.holdRepeatTimer) {
-      clearInterval(this.holdRepeatTimer);
+      clearTimeout(this.holdRepeatTimer);
       this.holdRepeatTimer = null;
     }
   }
