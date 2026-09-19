@@ -7,10 +7,10 @@ import { AppModule } from './app/app.module';
 
 enableProdMode();
 
-// iOS Safari'de yerel uygulama hissi için CSS'in tek başına engellemediği
-// hareketler: iki parmakla yakınlaştırma (gesturestart), çift dokunma ile
-// yakınlaştırma (art arda iki touchend) ve metin seçimi büyüteci
-// (selectstart). Yazı girilen alanlar bundan muaf.
+// iOS Safari'de yerel uygulama hissi için CSS'in engellemediği birkaç
+// hareket. Bunlar kaydırmayla ilgisi olmayan, seyrek olaylar; performansa
+// etkisi yoktur. (Dokunuşun kendisini iptal etme işi, kaydırma gerektirmeyen
+// alanlarda ilgili bileşenlerde yapılır: TodayComponent ve üst kart.)
 const isEditable = (target: EventTarget | null): boolean =>
   target instanceof HTMLElement &&
   (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA');
@@ -22,19 +22,11 @@ document.addEventListener('selectstart', (e) => {
     e.preventDefault();
   }
 });
-
-let lastTouchEnd = 0;
-document.addEventListener(
-  'touchend',
-  (e) => {
-    const now = Date.now();
-    if (now - lastTouchEnd < 350 && !isEditable(e.target)) {
-      e.preventDefault();
-    }
-    lastTouchEnd = now;
-  },
-  { passive: false }
-);
+document.addEventListener('contextmenu', (e) => {
+  if (!isEditable(e.target)) {
+    e.preventDefault();
+  }
+});
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()], })

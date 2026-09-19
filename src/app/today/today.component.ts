@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { imsakiye } from '../imsakiye';
@@ -122,6 +122,21 @@ export class TodayComponent implements OnInit, OnDestroy {
     if (this.timer) {
       clearInterval(this.timer);
     }
+  }
+
+  /** iOS: "dokun, sonra basılı tut" hareketi metin büyütecini / tek parmak
+   *  yakınlaştırmayı tetikliyor. Bu sayfa kaydırılmadığı için dokunuşun
+   *  varsayılanını burada iptal etmek kaydırma performansını etkilemez.
+   *  İçerik nadiren de olsa taşıyorsa (çok kısa ekran) kaydırmaya izin
+   *  vermek için dokunulmaz. */
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    const host = event.currentTarget as HTMLElement;
+    const scroller = host.parentElement;
+    if (scroller && scroller.scrollHeight > scroller.clientHeight + 1) {
+      return;
+    }
+    event.preventDefault();
   }
 
   calc() {

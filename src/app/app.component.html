@@ -2,7 +2,7 @@
   <div class="phone-frame">
 
     <div class="header-card">
-      <div class="brand">
+      <div class="brand" (touchstart)="$event.preventDefault()">
         <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
           <rect width="24" height="24" fill="#0F7B6C" />
           <circle cx="12" cy="6.6" r="1.9" fill="#D8B26E" />
@@ -52,7 +52,7 @@
       </a>
     </div>
 
-    <div class="build-info">{{ buildVersion }} · {{ buildBranch }} · {{ buildTimestamp }}</div>
+    <div class="build-info" (touchstart)="$event.preventDefault()">{{ buildVersion }} · {{ buildBranch }} · {{ buildTimestamp }}</div>
   </div>
 
   @if (updateAvailable) {
