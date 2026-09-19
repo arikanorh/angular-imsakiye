@@ -75,9 +75,8 @@ export class AdminPanelComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /** − / + düğmesine basıldığında hemen bir adım atar; basılı tutulursa
-   *  kısa bir gecikmeden sonra bırakılana dek tekrar eder. Tekrar uzadıkça
-   *  hızlanır: gün için aralık kısalır, saat için adım 5 → 15 → 60 dakikaya
-   *  büyür ki bir günü basılı tutarak birkaç saniyede geçmek mümkün olsun. */
+   *  kısa bir gecikmeden sonra bırakılana dek sabit hızda tekrar eder
+   *  (gün: 1 gün, saat: 5 dakika; hızlanma yok). */
   startHold(kind: 'day' | 'time', delta: number, event: Event) {
     event.preventDefault();
     this.stopHold();
@@ -93,26 +92,11 @@ export class AdminPanelComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    let repeats = 0;
-    const direction = delta < 0 ? -1 : 1;
-    const step = () => {
-      repeats++;
-      if (kind === 'day') {
-        this.stepDay(direction);
-      } else {
-        const magnitude = repeats > 30 ? 60 : repeats > 10 ? 15 : 5;
-        this.stepMinutes(direction * magnitude);
-      }
-    };
+    const step = () => (kind === 'day' ? this.stepDay(delta) : this.stepMinutes(delta));
 
     step();
     this.holdDelayTimer = setTimeout(() => {
-      const tick = () => {
-        step();
-        const interval = repeats > 20 ? 50 : 90;
-        this.holdRepeatTimer = setTimeout(tick, interval);
-      };
-      tick();
+      this.holdRepeatTimer = setInterval(step, 90);
     }, 400);
   }
 
@@ -131,7 +115,7 @@ export class AdminPanelComponent implements OnInit, OnChanges, OnDestroy {
       this.holdDelayTimer = null;
     }
     if (this.holdRepeatTimer) {
-      clearTimeout(this.holdRepeatTimer);
+      clearInterval(this.holdRepeatTimer);
       this.holdRepeatTimer = null;
     }
   }
