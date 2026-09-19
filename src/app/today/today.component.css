@@ -373,9 +373,10 @@
 .date-wrapper {
   text-align: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
   color: #5c6b66;
   padding: 4px 0 2px;
   flex: none;
+  white-space: nowrap;
 }
