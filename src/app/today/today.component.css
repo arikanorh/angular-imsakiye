@@ -273,10 +273,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 11px;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 600;
   color: #0f7b6c;
+}
+
+.tile-icon {
+  flex: none;
 }
 
 .timeline-label.passed .timeline-label-title,

@@ -41,6 +41,9 @@ export class TodayComponent implements OnInit, OnDestroy {
   iftarPassed;
   progressPercent = 0;
   dayProgressPercent = 0;
+  /** Çizelge şu an gece aralığını (iftar → sahur) gösteriyorsa true;
+   *  uç ikonlar buna göre yer değiştirir. */
+  nightSpan = false;
 
   showRamadanCountdown = false;
   ramadanStarted = false;
@@ -186,6 +189,7 @@ export class TodayComponent implements OnInit, OnDestroy {
       this.remainingLabel = 'İftara kalan';
       this.showRemainingCountdown = true;
       this.progressPercent = 100;
+      this.nightSpan = false;
       this.dayProgressPercent = (Number(today.day) / data.length) * 100;
       return;
     }
@@ -234,6 +238,7 @@ export class TodayComponent implements OnInit, OnDestroy {
 
     let spanStart = sahurDateTime;
     let spanEnd = iftarDateTime;
+    this.nightSpan = !sahurPassed;
     if (!sahurPassed) {
       spanEnd = sahurDateTime;
       // İlk sahurdan önce önceki iftar yoktur; sahura kalan son 24
