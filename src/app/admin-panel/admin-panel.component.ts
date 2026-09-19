@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import moment from 'moment';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
@@ -21,6 +21,8 @@ const AY_ADLARI_TR = [
 
 const DAYS_BEFORE = 60;
 const DAYS_AFTER = 5;
+/** Simülasyon açıldığında başlangıç konumu: Ramazan'a 2 gün kala. */
+const DEFAULT_OFFSET = -2;
 
 @Component({
   selector: 'app-admin-panel',
@@ -28,14 +30,14 @@ const DAYS_AFTER = 5;
   styleUrls: ['./admin-panel.component.css'],
   standalone: false,
 })
-export class AdminPanelComponent implements OnInit, OnDestroy {
+export class AdminPanelComponent implements OnInit, OnChanges, OnDestroy {
   isOpen = false;
 
   /** Mobil yüzen barın görünürlüğü; üst karttaki geçici düğme kontrol eder. */
   @Input() mobileOpen = false;
 
   timeOfDay = '10:00';
-  dayOffset = -DAYS_BEFORE;
+  dayOffset = DEFAULT_OFFSET;
 
   minOffset = -DAYS_BEFORE;
   maxOffset: number;
@@ -134,8 +136,28 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    // Mobil bar üst karttaki düğmeyle açıldığında simülasyonu başlat.
+    if (changes['mobileOpen'] && this.mobileOpen) {
+      this.activateIfIdle();
+    }
+  }
+
   toggleOpen() {
     this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.activateIfIdle();
+    }
+  }
+
+  /** Panel/bar açılırken simülasyon çalışmıyorsa varsayılan konumdan
+   *  (Ramazan'a 2 gün kala, 10:00) başlat. */
+  private activateIfIdle() {
+    if (!this.simTime.isActive) {
+      this.dayOffset = DEFAULT_OFFSET;
+      this.timeOfDay = '10:00';
+      this.simTime.set(this.selectedMoment);
+    }
   }
 
   private get selectedMoment(): moment.Moment {
@@ -257,7 +279,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   resetToReal() {
-    this.dayOffset = -DAYS_BEFORE;
+    this.dayOffset = DEFAULT_OFFSET;
     this.timeOfDay = '10:00';
     this.simTime.reset();
   }

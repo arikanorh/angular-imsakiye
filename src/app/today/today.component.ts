@@ -219,18 +219,31 @@ export class TodayComponent implements OnInit, OnDestroy {
       this.iftarPassed = iftarPassed;
     }
 
-    let totalSpan = iftarDateTime.diff(sahurDateTime);
-    let elapsed = todayDateTime.diff(sahurDateTime);
-    let progress = totalSpan > 0 ? (elapsed / totalSpan) * 100 : 0;
-
-    if (!this.ramadanStarted && !this.showRamadanCountdown && !sahurPassed) {
-      // İlk sahura henüz ulaşılmadı; sahur-iftar aralığına göre hesap
-      // hep 0'da takılı kalır. Bunun yerine ilk sahura kalan son 24
-      // saatlik pencere üzerinden ilerlet.
-      let windowStart = sahurDateTime.clone().subtract(24, 'hours');
-      let windowElapsed = todayDateTime.diff(windowStart);
-      progress = (windowElapsed / (24 * 60 * 60 * 1000)) * 100;
+    // Çizelge her zaman bir aralığı temsil eder: gündüz sahur→iftar,
+    // gece ise (iftardan sonra ya da sahurdan önce) önceki iftar→sahur.
+    // Gece yarısı geçişinin önemi yok; aralık iki vakit arasında ölçülür.
+    let prevIftarDateTime: moment.Moment | null = null;
+    if (nextDay) {
+      // Akşam: az önce geride bıraktığımız günün iftarı.
+      prevIftarDateTime = moment(data[index].date + ' ' + data[index].end, format);
+    } else if (index > 0 && this.ramadanStarted) {
+      // Sabaha karşı: bir önceki günün iftarı.
+      let prev = data[index - 1];
+      prevIftarDateTime = moment(prev.date + ' ' + prev.end, format);
     }
+
+    let spanStart = sahurDateTime;
+    let spanEnd = iftarDateTime;
+    if (!sahurPassed) {
+      spanEnd = sahurDateTime;
+      // İlk sahurdan önce önceki iftar yoktur; sahura kalan son 24
+      // saatlik pencere üzerinden ilerlet.
+      spanStart = prevIftarDateTime ?? sahurDateTime.clone().subtract(24, 'hours');
+    }
+
+    let totalSpan = spanEnd.diff(spanStart);
+    let elapsed = todayDateTime.diff(spanStart);
+    let progress = totalSpan > 0 ? (elapsed / totalSpan) * 100 : 0;
 
     this.progressPercent = Math.min(100, Math.max(0, progress));
 
