@@ -2,7 +2,15 @@
   <div class="phone-frame">
 
     <div class="header-card">
-      <div class="brand" (touchstart)="$event.preventDefault()">
+      <div
+        class="brand"
+        (touchstart)="$event.preventDefault()"
+        (pointerdown)="startBrandPress($event)"
+        (pointerup)="cancelBrandPress()"
+        (pointerleave)="cancelBrandPress()"
+        (pointercancel)="cancelBrandPress()"
+        (contextmenu)="$event.preventDefault()"
+      >
         <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
           <rect width="24" height="24" fill="#0F7B6C" />
           <circle cx="12" cy="6.6" r="1.9" fill="#D8B26E" />
@@ -10,18 +18,6 @@
         </svg>
         <div class="app-title">İmsakiye</div>
       </div>
-      <button
-        type="button"
-        class="sim-toggle"
-        [class.active]="simPanelOpen"
-        (click)="simPanelOpen = !simPanelOpen"
-        aria-label="Zaman simülasyonunu aç/kapat"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 3" />
-        </svg>
-      </button>
       <div class="city-picker">
         <label for="city" class="sr-only">Şehir seç</label>
         <select id="city" [(ngModel)]="city">
@@ -51,14 +47,45 @@
         Takvim
       </a>
     </div>
-
-    <div class="build-info" (touchstart)="$event.preventDefault()">{{ buildVersion }} · {{ buildBranch }} · {{ buildTimestamp }}</div>
   </div>
 
   @if (updateAvailable) {
     <div class="update-toast">
       <span>Yeni bir sürüm mevcut.</span>
       <button (click)="reloadForUpdate()">Yenile</button>
+    </div>
+  }
+
+  @if (aboutOpen) {
+    <div class="sheet-backdrop" (click)="closeAbout()"></div>
+    <div class="about-sheet" role="dialog" aria-modal="true" aria-label="Hakkında">
+      <div class="sheet-grab"></div>
+      <div class="sheet-title">Hakkında</div>
+
+      <div class="kv">
+        <span>Sürüm</span>
+        <b class="mono">{{ buildVersion }}</b>
+      </div>
+      <div class="kv">
+        <span>Build</span>
+        <b class="mono">{{ buildBranch }} · {{ buildTimestamp }}</b>
+      </div>
+      <div class="kv">
+        <span>Gece modu</span>
+        <div class="seg" role="radiogroup" aria-label="Gece modu">
+          <button type="button" role="radio" [attr.aria-checked]="themeMode === 'light'" [class.on]="themeMode === 'light'" (click)="setTheme('light')">Açık</button>
+          <button type="button" role="radio" [attr.aria-checked]="themeMode === 'auto'" [class.on]="themeMode === 'auto'" (click)="setTheme('auto')">Otomatik</button>
+          <button type="button" role="radio" [attr.aria-checked]="themeMode === 'dark'" [class.on]="themeMode === 'dark'" (click)="setTheme('dark')">Koyu</button>
+        </div>
+      </div>
+      <div class="kv">
+        <span>Zaman simülasyonu</span>
+        <button type="button" class="switch" role="switch" [attr.aria-checked]="simPanelOpen" [class.on]="simPanelOpen" (click)="simPanelOpen = !simPanelOpen" aria-label="Zaman simülasyonu"></button>
+      </div>
+      <div class="kv">
+        <span>Şehir</span>
+        <b>{{ city }}</b>
+      </div>
     </div>
   }
 

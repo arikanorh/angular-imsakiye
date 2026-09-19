@@ -1,3 +1,39 @@
+/* Tema token'ları. Açık palet varsayılan; koyu palet html[data-theme="dark"]
+   ile gelir (ThemeService: Açık / Koyu / Otomatik). Bileşen CSS'leri renkleri
+   yalnızca bu değişkenlerden alır. */
+:root {
+  --bg-page: #dcece7;
+  --bg-frame: #eaf6f4;
+  --surface: #ffffff;
+  --surface-tint: #eaf7f4;
+  --ink: #0f2b26;
+  --muted: #5c6b66;
+  --muted-2: #7c8b87;
+  --accent: #0f7b6c;
+  --accent-rgb: 15, 123, 108;
+  --on-accent: #ffffff;
+  --soft: #d8e6e2;
+  --shadow-rgb: 15, 43, 38;
+  --gold: #d8b26e;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg-page: #0b1f1b;
+  --bg-frame: #10302a;
+  --surface: #163a33;
+  --surface-tint: #163a33;
+  --ink: #e6f2ee;
+  --muted: #8fa8a1;
+  --muted-2: #7a948d;
+  --accent: #4fc3a8;
+  --accent-rgb: 79, 195, 168;
+  --on-accent: #0b1f1b;
+  --soft: #1f4a41;
+  --shadow-rgb: 0, 0, 0;
+  color-scheme: dark;
+}
+
 /* Yerel uygulama hissi: uzun basışta metin seçimi / büyüteç / kopyala
    menüsü, dokunma vurgusu ve (çift dokunma ya da dokun-basılı tut ile)
    yakınlaştırma kapalı. Kural her öğeye uygulanır; iOS Safari yalnızca
@@ -16,6 +52,7 @@ html {
   height: 100%;
   overflow: hidden;
   touch-action: pan-x pan-y;
+  background: var(--bg-page);
 }
 
 body {

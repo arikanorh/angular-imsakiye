@@ -4,6 +4,7 @@ import moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { CityService } from './city.service';
+import { ThemeMode, ThemeService } from './theme.service';
 
 @Component({
     selector: 'my-app',
@@ -24,15 +25,47 @@ export class AppComponent implements OnInit {
 
   updateAvailable = false;
 
-  /** Geçici: mobil zaman simülasyonu barını açar/kapatır (varsayılan kapalı). */
+  /** Mobil zaman simülasyonu barı; "Hakkında" sayfasındaki anahtar kontrol eder. */
   simPanelOpen = false;
+
+  /** Markaya uzun basışla açılan "Hakkında" sayfası. */
+  aboutOpen = false;
+  private brandPressTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private swUpdate: SwUpdate,
-    private cityService: CityService
+    private cityService: CityService,
+    private theme: ThemeService
   ) {
     this.cities = cityService.cities;
+  }
+
+  get themeMode(): ThemeMode {
+    return this.theme.mode;
+  }
+
+  setTheme(mode: ThemeMode) {
+    this.theme.setMode(mode);
+  }
+
+  startBrandPress(event: PointerEvent) {
+    this.cancelBrandPress();
+    this.brandPressTimer = setTimeout(() => {
+      this.brandPressTimer = null;
+      this.aboutOpen = true;
+    }, 500);
+  }
+
+  cancelBrandPress() {
+    if (this.brandPressTimer) {
+      clearTimeout(this.brandPressTimer);
+      this.brandPressTimer = null;
+    }
+  }
+
+  closeAbout() {
+    this.aboutOpen = false;
   }
 
   get city(): string {

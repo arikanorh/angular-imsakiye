@@ -19,18 +19,18 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #ffffff;
-    color: #0f7b6c;
+    background: var(--surface);
+    color: var(--accent);
     border: none;
-    box-shadow: 0 14px 28px -14px rgba(15, 43, 38, 0.45);
+    box-shadow: 0 14px 28px -14px rgba(var(--shadow-rgb), 0.45);
     cursor: pointer;
     z-index: 20;
   }
 
   .sim-fab.simulating {
-    background: #0f7b6c;
-    color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22), 0 14px 28px -14px rgba(15, 43, 38, 0.45);
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 14px 28px -14px rgba(var(--shadow-rgb), 0.45);
   }
 
   .sim-panel {
@@ -43,11 +43,11 @@
     width: 210px;
     max-height: calc(100vh - 110px);
     padding: 16px 14px;
-    background: #ffffff;
+    background: var(--surface);
     border-radius: 20px;
-    box-shadow: 0 20px 40px -22px rgba(15, 43, 38, 0.4);
+    box-shadow: 0 20px 40px -22px rgba(var(--shadow-rgb), 0.4);
     font-family: 'Manrope', system-ui, sans-serif;
-    color: #0f2b26;
+    color: var(--ink);
     overflow-y: auto;
     z-index: 20;
   }
@@ -65,7 +65,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5c6b66;
+  color: var(--muted);
 }
 
 .sim-close {
@@ -76,8 +76,8 @@
   height: 20px;
   border-radius: 50%;
   border: none;
-  background: #eaf6f4;
-  color: #5c6b66;
+  background: var(--bg-frame);
+  color: var(--muted);
   cursor: pointer;
   flex: none;
   padding: 0;
@@ -101,15 +101,15 @@
 .sim-status {
   font-size: 11px;
   font-weight: 700;
-  color: #0f7b6c;
+  color: var(--accent);
 }
 
 .sim-time-input {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   font-weight: 700;
-  color: #0f2b26;
-  background: #eaf6f4;
+  color: var(--ink);
+  background: var(--bg-frame);
   border: none;
   border-radius: 8px;
   padding: 4px 8px;
@@ -146,7 +146,7 @@
 .sim-slider::-webkit-slider-runnable-track {
   height: 8px;
   border-radius: 999px;
-  background: #d8e6e2;
+  background: var(--soft);
 }
 
 .sim-slider::-webkit-slider-thumb {
@@ -156,24 +156,24 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #0f7b6c;
-  border: 4px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22), 0 6px 14px -6px rgba(15, 43, 38, 0.4);
+  background: var(--accent);
+  border: 4px solid var(--surface);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 6px 14px -6px rgba(var(--shadow-rgb), 0.4);
 }
 
 .sim-slider::-moz-range-track {
   height: 8px;
   border-radius: 999px;
-  background: #d8e6e2;
+  background: var(--soft);
 }
 
 .sim-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #0f7b6c;
-  border: 4px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22), 0 6px 14px -6px rgba(15, 43, 38, 0.4);
+  background: var(--accent);
+  border: 4px solid var(--surface);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 6px 14px -6px rgba(var(--shadow-rgb), 0.4);
 }
 
 .sim-reset {
@@ -184,7 +184,7 @@
   font: inherit;
   font-size: 11px;
   font-weight: 700;
-  color: #0f7b6c;
+  color: var(--accent);
   background: none;
   border: none;
   padding: 2px 0 0;
@@ -206,11 +206,11 @@
     max-width: 398px;
     margin: 0 auto;
     padding: 10px 14px 12px;
-    background: rgba(255, 255, 255, 0.97);
+    background: var(--surface);
     border-radius: 16px;
-    box-shadow: 0 18px 36px -18px rgba(15, 43, 38, 0.45);
+    box-shadow: 0 18px 36px -18px rgba(var(--shadow-rgb), 0.45);
     font-family: 'Manrope', system-ui, sans-serif;
-    color: #0f2b26;
+    color: var(--ink);
     z-index: 15;
   }
 }
@@ -236,7 +236,7 @@
 .sim-mobile-status {
   font-size: 10px;
   font-weight: 700;
-  color: #0f7b6c;
+  color: var(--accent);
 }
 
 .sim-mobile-reset {
@@ -247,8 +247,8 @@
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: #eaf6f4;
-  color: #0f7b6c;
+  background: var(--bg-frame);
+  color: var(--accent);
   cursor: pointer;
   flex: none;
   padding: 0;
@@ -269,8 +269,8 @@
   flex: none;
   border: none;
   border-radius: 10px;
-  background: #eaf6f4;
-  color: #0f7b6c;
+  background: var(--bg-frame);
+  color: var(--accent);
   font: inherit;
   font-size: 19px;
   font-weight: 800;
@@ -283,7 +283,7 @@
 }
 
 .sim-mobile-step:active {
-  background: #d8e6e2;
+  background: var(--soft);
 }
 
 .sim-mobile-label {
@@ -293,7 +293,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #5c6b66;
+  color: var(--muted);
 }
 
 .sim-mobile-slider {
@@ -309,7 +309,7 @@
 .sim-mobile-slider::-webkit-slider-runnable-track {
   height: 8px;
   border-radius: 999px;
-  background: #d8e6e2;
+  background: var(--soft);
 }
 
 .sim-mobile-slider::-webkit-slider-thumb {
@@ -319,22 +319,22 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #0f7b6c;
-  border: 4px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22), 0 6px 14px -6px rgba(15, 43, 38, 0.4);
+  background: var(--accent);
+  border: 4px solid var(--surface);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 6px 14px -6px rgba(var(--shadow-rgb), 0.4);
 }
 
 .sim-mobile-slider::-moz-range-track {
   height: 8px;
   border-radius: 999px;
-  background: #d8e6e2;
+  background: var(--soft);
 }
 
 .sim-mobile-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #0f7b6c;
-  border: 4px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(15, 123, 108, 0.22), 0 6px 14px -6px rgba(15, 43, 38, 0.4);
+  background: var(--accent);
+  border: 4px solid var(--surface);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 6px 14px -6px rgba(var(--shadow-rgb), 0.4);
 }

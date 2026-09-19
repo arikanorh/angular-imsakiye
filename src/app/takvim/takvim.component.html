@@ -1,25 +1,39 @@
+<div class="tk-summary">
+  <div class="tk-summary-text">
+    <b>Ramazan {{ hijriYear }}</b>
+    <div class="tk-sub">{{ totalDays }} gün · {{ rangeLabel }}</div>
+  </div>
+  @if (hasToday) {
+    <button type="button" class="tk-today-btn" (click)="scrollToToday()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="3" /><path d="M3 9h18" /></svg>
+      Bugün
+    </button>
+  }
+</div>
+
+<div class="tk-head">
+  <span>Gün</span>
+  <span>Sahur</span>
+  <span>İftar</span>
+  <span>Süre</span>
+</div>
+
 <div class="takvim-list">
-  @for (gun of days; track gun.day) {
-    <div class="takvim-row" [class.today]="gun.isToday" [class.past]="gun.isPast">
-      <div class="takvim-day-badge">{{ gun.day }}</div>
-      <div class="takvim-date">
-        <div class="d1">{{ gun.dateLabel }}</div>
-        <div class="d2">{{ gun.weekdayLabel }}{{ gun.isToday ? ' · Bugün' : '' }}</div>
+  @for (week of weeks; track week.label) {
+    <div class="tk-sep">{{ week.label }}</div>
+    @for (gun of week.days; track gun.day) {
+      <div class="takvim-row" [class.today]="gun.isToday" [class.past]="gun.isPast" [class.cuma]="gun.isFriday">
+        <div class="takvim-day">
+          <div class="takvim-day-badge">{{ gun.day }}</div>
+          <div class="takvim-date">
+            <div class="d1">{{ gun.dateLabel }}</div>
+            <div class="d2">{{ gun.weekdayLabel }}{{ gun.isToday ? ' · Bugün' : '' }}</div>
+          </div>
+        </div>
+        <div class="v">{{ gun.start }}</div>
+        <div class="v">{{ gun.end }}</div>
+        <div class="v dim">{{ gun.durationLabel }}</div>
       </div>
-      <div class="takvim-times">
-        <div class="t">
-          <div class="l">Sahur</div>
-          <div class="v">{{ gun.start }}</div>
-        </div>
-        <div class="t">
-          <div class="l">İftar</div>
-          <div class="v">{{ gun.end }}</div>
-        </div>
-        <div class="t">
-          <div class="l">Süre</div>
-          <div class="v">{{ gun.durationLabel }}</div>
-        </div>
-      </div>
-    </div>
+    }
   }
 </div>
