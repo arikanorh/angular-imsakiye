@@ -74,6 +74,7 @@
 
     <div class="sim-mobile-row">
       <span class="sim-mobile-label">Gün</span>
+      <button type="button" class="sim-mobile-step" (click)="stepDay(-1)" aria-label="Bir gün geri">−</button>
       <input
         type="range"
         class="sim-mobile-slider"
@@ -84,10 +85,12 @@
         [value]="dayOffset"
         (input)="onOffsetChange($any($event.target).value)"
       />
+      <button type="button" class="sim-mobile-step" (click)="stepDay(1)" aria-label="Bir gün ileri">+</button>
     </div>
 
     <div class="sim-mobile-row">
       <span class="sim-mobile-label">Saat</span>
+      <button type="button" class="sim-mobile-step" (click)="stepMinutes(-5)" aria-label="Beş dakika geri">−</button>
       <input
         type="range"
         class="sim-mobile-slider"
@@ -98,6 +101,7 @@
         [value]="timeMinutes"
         (input)="onMinutesChange($any($event.target).value)"
       />
+      <button type="button" class="sim-mobile-step" (click)="stepMinutes(5)" aria-label="Beş dakika ileri">+</button>
     </div>
   </div>
 }

@@ -257,7 +257,30 @@
 .sim-mobile-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+}
+
+.sim-mobile-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border: none;
+  border-radius: 8px;
+  background: #eaf6f4;
+  color: #0f7b6c;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sim-mobile-step:active {
+  background: #d8e6e2;
 }
 
 .sim-mobile-label {

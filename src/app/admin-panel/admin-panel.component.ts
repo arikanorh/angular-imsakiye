@@ -116,6 +116,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.simTime.set(this.selectedMoment);
   }
 
+  /** Mobil − / + düğmeleri: gün kaydırıcısını sınırlar içinde bir adım oynatır. */
+  stepDay(delta: number) {
+    const next = Math.max(this.minOffset, Math.min(this.maxOffset, this.dayOffset + delta));
+    this.onOffsetChange(String(next));
+  }
+
+  /** Mobil − / + düğmeleri: saati dakika cinsinden oynatır, gün değişmez
+   *  (00:00 altına veya 23:59 üstüne çıkmaz). */
+  stepMinutes(delta: number) {
+    const MAX_SLIDER_MINUTES = 24 * 60 - 5; // kaydırıcının üst sınırı (23:55)
+    const next = Math.max(0, Math.min(MAX_SLIDER_MINUTES, this.timeMinutes + delta));
+    this.onMinutesChange(String(next));
+  }
+
   onOffsetChange(value: string) {
     this.dayOffset = Number(value);
     this.simTime.set(this.selectedMoment);
