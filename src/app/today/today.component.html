@@ -77,27 +77,13 @@
           <path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5Z" />
         </svg>
         <div class="tile-text">
-          <div class="timeline-label-title">
-            Sahur
-            @if (sahurPassed) {
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12l5 5L20 7" />
-              </svg>
-            }
-          </div>
+          <div class="timeline-label-title">Sahur</div>
           <div class="timeline-label-value">{{ start }}</div>
         </div>
       </div>
       <div class="timeline-label value-tile iftar" [class.passed]="iftarPassed">
         <div class="tile-text">
-          <div class="timeline-label-title">
-            @if (iftarPassed) {
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12l5 5L20 7" />
-              </svg>
-            }
-            İftar
-          </div>
+          <div class="timeline-label-title">İftar</div>
           <div class="timeline-label-value">{{ end }}</div>
         </div>
         <svg class="tile-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">

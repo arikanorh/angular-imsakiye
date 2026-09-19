@@ -1,6 +1,6 @@
 {
   "name": "angular",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "private": true,
   "dependencies": {
     "@angular/animations": "^22.1.7",
