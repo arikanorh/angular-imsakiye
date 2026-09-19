@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
 
   updateAvailable = false;
 
+  /** Geçici: mobil zaman simülasyonu barını açar/kapatır (varsayılan kapalı). */
+  simPanelOpen = false;
+
   constructor(
     private route: ActivatedRoute,
     private swUpdate: SwUpdate,

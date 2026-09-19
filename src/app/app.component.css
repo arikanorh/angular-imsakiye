@@ -127,6 +127,35 @@
   color: #ffffff;
 }
 
+/* Geçici simülasyon aç/kapa düğmesi — yalnızca mobil (<960px). */
+.sim-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  flex: none;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #5c6b66;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sim-toggle.active {
+  color: #ffffff;
+  background: #0f7b6c;
+}
+
+@media (max-width: 959px) {
+  .sim-toggle {
+    display: flex;
+  }
+}
+
 .city-picker {
   position: relative;
   display: flex;

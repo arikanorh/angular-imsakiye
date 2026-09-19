@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
 import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
@@ -30,6 +30,9 @@ const DAYS_AFTER = 5;
 })
 export class AdminPanelComponent implements OnInit, OnDestroy {
   isOpen = false;
+
+  /** Mobil yüzen barın görünürlüğü; üst karttaki geçici düğme kontrol eder. */
+  @Input() mobileOpen = false;
 
   timeOfDay = '10:00';
   dayOffset = -DAYS_BEFORE;
@@ -91,6 +94,26 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       return `Ramazan'ın ${this.dayOffset + 1}. günü`;
     }
     return `Bitişten ${this.dayOffset - this.totalDays + 1} gün sonra`;
+  }
+
+  /** Saat kaydırıcısı için gün içindeki dakika (0-1439). */
+  get timeMinutes(): number {
+    const [h, m] = this.timeOfDay.split(':').map(Number);
+    return (h || 0) * 60 + (m || 0);
+  }
+
+  get timeLabel(): string {
+    return this.timeOfDay;
+  }
+
+  /** Mobil saat kaydırıcısı: gün ayrı kaydırıcıda olduğundan gece yarısı
+   *  sarması uygulanmaz, yalnızca saat/dakika değişir. */
+  onMinutesChange(value: string) {
+    const total = Math.max(0, Math.min(24 * 60 - 1, Number(value) || 0));
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    this.timeOfDay = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    this.simTime.set(this.selectedMoment);
   }
 
   onOffsetChange(value: string) {

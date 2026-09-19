@@ -10,6 +10,18 @@
         </svg>
         <div class="app-title">İmsakiye</div>
       </div>
+      <button
+        type="button"
+        class="sim-toggle"
+        [class.active]="simPanelOpen"
+        (click)="simPanelOpen = !simPanelOpen"
+        aria-label="Zaman simülasyonunu aç/kapat"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 3" />
+        </svg>
+      </button>
       <div class="city-picker">
         <label for="city" class="sr-only">Şehir seç</label>
         <select id="city" [(ngModel)]="city">
@@ -50,5 +62,5 @@
     </div>
   }
 
-  <app-admin-panel></app-admin-panel>
+  <app-admin-panel [mobileOpen]="simPanelOpen"></app-admin-panel>
 </div>
