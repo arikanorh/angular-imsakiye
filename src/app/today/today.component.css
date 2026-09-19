@@ -276,14 +276,13 @@
   gap: 12px;
 }
 
-/* Yazı ve saat alt alta, merkezleri hizalı. */
-.tile-text {
+/* İkon ve altında vakit adı; yanında saat. */
+.tile-glyph {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  min-width: 0;
-  text-align: center;
+  flex: none;
 }
 
 .timeline-label-title {
@@ -304,7 +303,7 @@
 
 .timeline-label-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 800;
   color: #0f2b26;
 }
