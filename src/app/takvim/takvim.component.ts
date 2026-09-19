@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ElementRef, AfterViewInit } from '@angular/core';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { imsakiye } from '../imsakiye';
@@ -39,6 +39,12 @@ interface TakvimGunu {
   durationLabel: string;
   isToday: boolean;
   isPast: boolean;
+  isFriday: boolean;
+}
+
+interface TakvimHaftasi {
+  label: string;
+  days: TakvimGunu[];
 }
 
 @Component({
@@ -48,21 +54,55 @@ interface TakvimGunu {
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: false,
 })
-export class TakvimComponent implements OnInit, OnDestroy {
+export class TakvimComponent implements OnInit, AfterViewInit, OnDestroy {
   city: string;
   days: TakvimGunu[] = [];
+  weeks: TakvimHaftasi[] = [];
+
+  hijriYear = '';
+  totalDays = 0;
+  rangeLabel = '';
+  hasToday = false;
 
   private citySub: Subscription;
   private simTimeSub: Subscription;
 
   constructor(
     private cityService: CityService,
-    private simTime: SimTimeService
+    private simTime: SimTimeService,
+    private host: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit() {
     this.citySub = this.cityService.city$.subscribe(() => this.buildDays());
-    this.simTimeSub = this.simTime.override$.subscribe(() => this.buildDays());
+    this.simTimeSub = this.simTime.override$.subscribe(() => {
+      this.buildDays();
+      setTimeout(() => this.scrollToToday('auto'));
+    });
+  }
+
+  ngAfterViewInit() {
+    // Açılışta bugünün satırı ortada gelsin.
+    setTimeout(() => this.scrollToToday('auto'));
+  }
+
+  scrollToToday(behavior: ScrollBehavior = 'smooth') {
+    const row = this.host.nativeElement.querySelector('.takvim-row.today');
+    if (row) {
+      row.scrollIntoView({ block: 'center', behavior });
+    }
+  }
+
+  /** Hicri yıl (Umm al-Qura takvimi). Desteklenmeyen tarayıcıda boş kalır
+   *  ve başlık yalnızca "Ramazan" olur. */
+  private hijriYearOf(date: moment.Moment): string {
+    try {
+      const parts = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { year: 'numeric' }).formatToParts(date.toDate());
+      const year = parts.find((p) => p.type === 'year');
+      return year ? year.value : '';
+    } catch {
+      return '';
+    }
   }
 
   ngOnDestroy() {
@@ -96,7 +136,24 @@ export class TakvimComponent implements OnInit, OnDestroy {
         durationLabel: `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`,
         isToday: item.date === todayDate,
         isPast: m.isBefore(todayDateTime, 'day'),
+        isFriday: m.day() === 5,
       };
     });
+
+    this.hasToday = this.days.some((d) => d.isToday);
+    this.totalDays = data.length;
+    let first = moment(data[0].date, 'YYYY-MM-DD');
+    let last = moment(data[data.length - 1].date, 'YYYY-MM-DD');
+    // Ramazan'ın ortasındaki bir gün hicri yılı güvenle verir.
+    this.hijriYear = this.hijriYearOf(moment(data[Math.floor(data.length / 2)].date, 'YYYY-MM-DD'));
+    this.rangeLabel = `${first.date()} ${AY_ADLARI_TR[first.month()]} – ${last.date()} ${AY_ADLARI_TR[last.month()]}`;
+
+    this.weeks = [];
+    for (let i = 0; i < this.days.length; i += 7) {
+      this.weeks.push({
+        label: `${i / 7 + 1}. hafta`,
+        days: this.days.slice(i, i + 7),
+      });
+    }
   }
 }

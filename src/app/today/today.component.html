@@ -19,6 +19,14 @@
   @if (showRamadanCountdown) {
     <div class="ramadan-countdown-card">
       <div class="label-eyebrow badge">Ramazan'a Kalan</div>
+      <div class="countdown-hero">
+        <span class="ramadan-countdown-number">{{ daysUntilRamadan }}</span>
+        <span class="label-eyebrow">gün</span>
+      </div>
+      <div class="ramadan-start">
+        <b>{{ ramadanStartLabel }}</b>
+        <span>{{ ramadanStartWeekday }}</span>
+      </div>
       <div class="ramadan-track-wrapper">
         <div class="ramadan-track" [style.background]="ramadanProgressGradient"></div>
         <svg class="ramadan-track-icon start" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -29,26 +37,49 @@
           <path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5Z" />
         </svg>
         <div class="ramadan-track-dot" [style.left.%]="ramadanTrackDotPercent"></div>
+        <span class="track-end-label start">Bugün</span>
+        <span class="track-end-label end">1 Ramazan</span>
       </div>
-      <div class="ramadan-track-labels">
-        <div class="value-tile">
-          <div class="label-eyebrow small">Bugün</div>
-          <div class="ramadan-track-value">{{ todayShortLabel }}</div>
+      <div class="scale-note">{{ scaleNote }}</div>
+      <div class="first-day">
+        <div class="label-eyebrow small left">İlk gün · {{ city }}</div>
+    <div class="timeline-labels">
+      <div class="timeline-label value-tile sahur">
+        <div class="tile-glyph">
+          <svg class="tile-icon" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5Z" />
+          </svg>
+          <div class="timeline-label-title">Sahur</div>
         </div>
-        <div class="value-tile">
-          <div class="label-eyebrow small">Ramazan</div>
-          <div class="ramadan-track-value">{{ ramadanStartShortLabel }}</div>
+        <div class="timeline-label-value">{{ firstDayStart }}</div>
+      </div>
+      <div class="timeline-label value-tile iftar">
+        <div class="timeline-label-value">{{ firstDayEnd }}</div>
+        <div class="tile-glyph">
+          <svg class="tile-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M12 3v4M4.2 10.2l1.4 1.4M18.4 10.2l1.4-1.4M2 18h20M6 18a6 6 0 0 1 12 0" />
+          </svg>
+          <div class="timeline-label-title">İftar</div>
         </div>
       </div>
-      <div class="ramadan-countdown-headline">
-        <span class="ramadan-countdown-number">{{ daysUntilRamadan }}</span>
-        <span class="label-eyebrow">gün kaldı</span>
+    </div>
       </div>
     </div>
   }
 
   @if (!showRamadanCountdown) {
   <div class="timeline-card">
+    <div class="card-topline">
+      <span class="label-eyebrow accent">{{ dayStatusLabel }}</span>
+      <span class="label-eyebrow">{{ weekdayLabel }}</span>
+    </div>
+
+    <div class="countdown-hero">
+      <div class="remaining-label">{{ remainingLabel }}</div>
+      <div class="remaining-value">{{ remaining }}</div>
+      <div class="remaining-unit">{{ remainingUnitLabel }}</div>
+    </div>
+
     <div class="timeline-track-wrapper">
       <div class="timeline-track" [style.background]="progressGradient"></div>
       @if (nightSpan) {
@@ -69,8 +100,13 @@
         </svg>
       }
       <div class="track-dot" [style.left.%]="trackDotPercent"></div>
-      <div class="track-now" [style.left.%]="trackDotPercent">ŞU AN</div>
+      <div class="track-now" [style.left.%]="trackDotPercent">{{ nowLabel }}</div>
+      @if (spanStartLabel) {
+        <span class="track-end-label start">{{ spanStartLabel }}</span>
+      }
+      <span class="track-end-label end">{{ spanEndLabel }}</span>
     </div>
+
     <div class="timeline-labels">
       <div class="timeline-label value-tile sahur" [class.passed]="sahurPassed">
         <div class="tile-glyph">
@@ -91,26 +127,19 @@
         </div>
       </div>
     </div>
+
+    @if (ramadanStarted) {
+      <div class="day-progress">
+        <div class="day-progress-header">
+          <div>Ramazan ilerlemesi</div>
+          <div class="day-progress-count">{{ dayIndex }} / {{ totalDays }}</div>
+        </div>
+        <div class="day-progress-track">
+          <div class="day-progress-fill" [style.width.%]="dayProgressPercent"></div>
+        </div>
+      </div>
+    }
   </div>
-  }
-
-  @if (showRemainingCountdown) {
-    <div class="remaining">
-      <div class="remaining-label">{{ remainingLabel }}</div>
-      <div class="remaining-value">{{ remaining }}</div>
-    </div>
-  }
-
-  @if (ramadanStarted) {
-    <div class="day-progress">
-      <div class="day-progress-header">
-        <div>RAMAZAN İLERLEMESİ</div>
-        <div class="day-progress-count">{{ day }}</div>
-      </div>
-      <div class="day-progress-track">
-        <div class="day-progress-fill" [style.width.%]="dayProgressPercent"></div>
-      </div>
-    </div>
   }
 
   }

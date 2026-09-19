@@ -5,6 +5,19 @@ import { imsakiye } from '../imsakiye';
 import { CityService } from '../city.service';
 import { SimTimeService } from '../sim-time.service';
 
+const GUN_ADLARI_TR = [
+  'Pazar',
+  'Pazartesi',
+  'Salı',
+  'Çarşamba',
+  'Perşembe',
+  'Cuma',
+  'Cumartesi',
+];
+
+/** Geri sayımda saniye yalnızca son bu kadar saniyede gösterilir. */
+const SECONDS_VISIBLE_UNDER = 10 * 60;
+
 const AY_ADLARI_TR = [
   'Ocak',
   'Şubat',
@@ -34,9 +47,20 @@ export class TodayComponent implements OnInit, OnDestroy {
   date = '';
   start = '';
   end = '';
-  remaining;
+  remaining = '';
   remainingLabel = '';
+  /** "saat : dakika" ya da son 10 dakikada "saat : dakika : saniye". */
+  remainingUnitLabel = 'saat : dakika';
   showRemainingCountdown = true;
+  /** Kart üst satırı: "Ramazan'ın 3. günü" / "Ramazan'a 1 gün kala". */
+  dayStatusLabel = '';
+  weekdayLabel = '';
+  /** Çizelge noktasının üstündeki saat balonu (HH:mm). */
+  nowLabel = '';
+  /** Çizelge uçlarındaki saatler (aralığın başı / sonu). */
+  spanStartLabel = '';
+  spanEndLabel = '';
+  dayIndex = 0;
   sahurPassed;
   iftarPassed;
   progressPercent = 0;
@@ -52,8 +76,11 @@ export class TodayComponent implements OnInit, OnDestroy {
   nextRamadanYear = 0;
   daysUntilRamadan = 0;
   ramadanProgressPercent = 0;
-  todayShortLabel = '';
-  ramadanStartShortLabel = '';
+  ramadanStartLabel = '';
+  ramadanStartWeekday = '';
+  scaleNote = '';
+  firstDayStart = '';
+  firstDayEnd = '';
 
   private citySub: Subscription;
   private simTimeSub: Subscription;
@@ -72,7 +99,7 @@ export class TodayComponent implements OnInit, OnDestroy {
    *  zaman senkron kalır. */
   get progressGradient(): string {
     const p = this.trackDotPercent;
-    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${p}%, #d8e6e2 ${p}%, #d8e6e2 100%)`;
+    return `linear-gradient(90deg, var(--accent) 0%, var(--accent) ${p}%, var(--soft) ${p}%, var(--soft) 100%)`;
   }
 
   /** İlerlemeyi (%0-100) uçlardaki ikonlarla çakışmayan %6-94 bandına
@@ -93,15 +120,20 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   get ramadanProgressGradient(): string {
     const p = this.ramadanTrackDotPercent;
-    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${p}%, #d8e6e2 ${p}%, #d8e6e2 100%)`;
+    return `linear-gradient(90deg, var(--accent) 0%, var(--accent) ${p}%, var(--soft) ${p}%, var(--soft) 100%)`;
   }
 
+  /** Üst satır saniyesiz: kahraman sayaçla yarışmasın. */
   private formatDisplayDate(m: moment.Moment): string {
-    return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()} · ${m.format('HH:mm:ss')}`;
+    return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()} · ${m.format('HH:mm')}`;
   }
 
-  private formatShortDate(m: moment.Moment): string {
-    return `${m.date()} ${AY_ADLARI_TR[m.month()].slice(0, 3)} ${m.year()}`;
+  private formatLongDate(m: moment.Moment): string {
+    return `${m.date()} ${AY_ADLARI_TR[m.month()]} ${m.year()}`;
+  }
+
+  private formatClock(m: moment.Moment): string {
+    return m.format('H:mm');
   }
 
   ngOnInit() {
@@ -182,12 +214,17 @@ export class TodayComponent implements OnInit, OnDestroy {
     // yerini alttaki canlı "sahura kalan" sayacına bırakır; o aralığa
     // kadar Ramazan'a kalan tüm günlerde bu kart gösterilir.
     this.showRamadanCountdown = this.daysUntilRamadan > 1;
+    this.weekdayLabel = GUN_ADLARI_TR[todayDateTime.day()];
     if (this.showRamadanCountdown) {
-      this.todayShortLabel = this.formatShortDate(todayDateTime);
-      this.ramadanStartShortLabel = this.formatShortDate(ramadanStartDateTime);
+      this.ramadanStartLabel = this.formatLongDate(ramadanStartDateTime);
+      this.ramadanStartWeekday = GUN_ADLARI_TR[ramadanStartDateTime.day()];
+      this.firstDayStart = data[0].start;
+      this.firstDayEnd = data[0].end;
       // 30 günden fazla kala 365 gün üzerinden, 30 günden az kala ise
       // (daha belirgin bir ilerleme hissi için) 30 gün üzerinden ölçekle.
       let scale = this.daysUntilRamadan > 30 ? 365 : 30;
+      this.scaleNote =
+        scale === 365 ? 'Ölçek: 365 gün · son 30 günde yakınlaşır' : 'Ölçek: son 30 gün';
       this.ramadanProgressPercent = Math.min(
         100,
         Math.max(0, ((scale - this.daysUntilRamadan) / scale) * 100)
@@ -211,14 +248,26 @@ export class TodayComponent implements OnInit, OnDestroy {
       this.end = today.end;
       this.sahurPassed = true;
       this.iftarPassed = true;
-      this.remaining = '00:00:00';
+      this.remaining = '00:00';
+      this.remainingUnitLabel = 'saat : dakika';
       this.remainingLabel = 'İftara kalan';
       this.showRemainingCountdown = true;
       this.progressPercent = 100;
       this.nightSpan = false;
+      this.dayIndex = Number(today.day);
+      this.totalDays = data.length;
+      this.dayStatusLabel = `Ramazan'ın ${today.day}. günü`;
+      this.nowLabel = todayDateTime.format('HH:mm');
+      this.spanStartLabel = today.start;
+      this.spanEndLabel = today.end;
       this.dayProgressPercent = (Number(today.day) / data.length) * 100;
       return;
     }
+
+    // Takvim günü: üst satırdaki "Ramazan'ın N. günü" ve ilerleme çubuğu
+    // bugünün tarihini izler; iftardan sonra gösterilen vakitler ise
+    // ertesi güne geçer (aşağıda today = next).
+    let calendarDay = today;
 
     let nextDay: boolean = false;
 
@@ -236,7 +285,13 @@ export class TodayComponent implements OnInit, OnDestroy {
     this.day = today.day + '/' + data.length;
     this.start = today.start;
     this.end = today.end;
-    this.dayProgressPercent = (Number(today.day) / data.length) * 100;
+    this.dayIndex = Number(calendarDay.day);
+    this.totalDays = data.length;
+    this.dayProgressPercent = (Number(calendarDay.day) / data.length) * 100;
+    this.dayStatusLabel = this.ramadanStarted
+      ? `Ramazan'ın ${calendarDay.day}. günü`
+      : `Ramazan'a ${Math.max(1, this.daysUntilRamadan)} gün kala`;
+    this.nowLabel = todayDateTime.format('HH:mm');
 
     sahurPassed = todayDateTime.isAfter(sahurDateTime);
     iftarPassed = todayDateTime.isAfter(iftarDateTime);
@@ -277,6 +332,11 @@ export class TodayComponent implements OnInit, OnDestroy {
     let progress = totalSpan > 0 ? (elapsed / totalSpan) * 100 : 0;
 
     this.progressPercent = Math.min(100, Math.max(0, progress));
+    // Uç etiketleri: 24 saatlik pencerede başlangıç bir vakit değil,
+    // o yüzden boş bırakılır.
+    this.spanStartLabel =
+      !sahurPassed && !prevIftarDateTime ? '' : this.formatClock(spanStart);
+    this.spanEndLabel = this.formatClock(spanEnd);
 
     let subjectDateTime = sahurDateTime;
     if (sahurPassed) {
@@ -287,15 +347,24 @@ export class TodayComponent implements OnInit, OnDestroy {
       .duration(subjectDateTime.diff(todayDateTime))
       .as('seconds');
     this.showRemainingCountdown = remainingSeconds <= 24 * 60 * 60;
-    this.remaining = this.convertToXXHoursYYMinutes(remainingSeconds);
+    const showSeconds = remainingSeconds <= SECONDS_VISIBLE_UNDER;
+    this.remaining = this.formatRemaining(remainingSeconds, showSeconds);
+    this.remainingUnitLabel = showSeconds ? 'saat : dakika : saniye' : 'saat : dakika';
   }
 
-  convertToXXHoursYYMinutes(seconds) {
-    seconds = Math.floor(seconds);
+  /** Saniye gizliyken dakika yukarı yuvarlanır ki "00:00" yalnızca vakit
+   *  gerçekten girdiğinde görünsün. */
+  formatRemaining(seconds: number, showSeconds: boolean): string {
+    seconds = Math.max(0, Math.floor(seconds));
+    if (!showSeconds) {
+      let totalMinutes = Math.ceil(seconds / 60);
+      let hour = Math.floor(totalMinutes / 60);
+      let minutes = totalMinutes % 60;
+      return this.padZero(hour) + ':' + this.padZero(minutes);
+    }
     let hour = Math.floor(seconds / (60 * 60));
     let minutes = Math.floor((seconds % (60 * 60)) / 60);
     let secs = seconds % 60;
-
     return (
       this.padZero(hour) + ':' + this.padZero(minutes) + ':' + this.padZero(secs)
     );
