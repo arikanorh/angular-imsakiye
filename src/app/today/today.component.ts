@@ -72,13 +72,20 @@ export class TodayComponent implements OnInit, OnDestroy {
     return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.progressPercent}%, #d8e6e2 ${this.progressPercent}%, #d8e6e2 100%)`;
   }
 
+  /** İlerlemeyi (%0-100) uçlardaki ikonlarla çakışmayan %6-94 bandına
+   *  doğrusal eşler. Kırpma yerine eşleme yapıldığı için nokta aralığın
+   *  başında/sonunda takılı kalmaz, ilk dakikadan itibaren hareket eder. */
+  private toDotPercent(progress: number): number {
+    const clamped = Math.min(100, Math.max(0, progress));
+    return 6 + clamped * 0.88;
+  }
+
   get trackDotPercent(): number {
-    // Uçlardaki sahur/iftar ikonlarıyla çakışmasın diye görsel olarak içeri çekiyoruz.
-    return Math.min(94, Math.max(6, this.progressPercent));
+    return this.toDotPercent(this.progressPercent);
   }
 
   get ramadanTrackDotPercent(): number {
-    return Math.min(94, Math.max(6, this.ramadanProgressPercent));
+    return this.toDotPercent(this.ramadanProgressPercent);
   }
 
   get ramadanProgressGradient(): string {
