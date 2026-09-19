@@ -45,6 +45,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   private refreshTimer;
 
+  // − / + düğmeleri basılı tutulduğunda otomatik tekrar için zamanlayıcılar.
+  private holdDelayTimer;
+  private holdRepeatTimer;
+
   constructor(
     private cityService: CityService,
     public simTime: SimTimeService
@@ -64,6 +68,30 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer);
+    }
+    this.stopHold();
+  }
+
+  /** − / + düğmesine basıldığında hemen bir adım atar; basılı tutulursa
+   *  kısa bir gecikmeden sonra bırakılana dek hızlı tekrar eder. */
+  startHold(kind: 'day' | 'time', delta: number, event: Event) {
+    event.preventDefault();
+    this.stopHold();
+    const step = () => (kind === 'day' ? this.stepDay(delta) : this.stepMinutes(delta));
+    step();
+    this.holdDelayTimer = setTimeout(() => {
+      this.holdRepeatTimer = setInterval(step, 90);
+    }, 400);
+  }
+
+  stopHold() {
+    if (this.holdDelayTimer) {
+      clearTimeout(this.holdDelayTimer);
+      this.holdDelayTimer = null;
+    }
+    if (this.holdRepeatTimer) {
+      clearInterval(this.holdRepeatTimer);
+      this.holdRepeatTimer = null;
     }
   }
 

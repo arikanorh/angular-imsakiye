@@ -277,6 +277,9 @@
   line-height: 1;
   cursor: pointer;
   padding: 0;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .sim-mobile-step:active {

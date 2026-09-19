@@ -74,7 +74,16 @@
 
     <div class="sim-mobile-row">
       <span class="sim-mobile-label">Gün</span>
-      <button type="button" class="sim-mobile-step" (click)="stepDay(-1)" aria-label="Bir gün geri">−</button>
+      <button
+        type="button"
+        class="sim-mobile-step"
+        aria-label="Bir gün geri"
+        (pointerdown)="startHold('day', -1, $event)"
+        (pointerup)="stopHold()"
+        (pointerleave)="stopHold()"
+        (pointercancel)="stopHold()"
+        (contextmenu)="$event.preventDefault()"
+      >−</button>
       <input
         type="range"
         class="sim-mobile-slider"
@@ -85,12 +94,30 @@
         [value]="dayOffset"
         (input)="onOffsetChange($any($event.target).value)"
       />
-      <button type="button" class="sim-mobile-step" (click)="stepDay(1)" aria-label="Bir gün ileri">+</button>
+      <button
+        type="button"
+        class="sim-mobile-step"
+        aria-label="Bir gün ileri"
+        (pointerdown)="startHold('day', 1, $event)"
+        (pointerup)="stopHold()"
+        (pointerleave)="stopHold()"
+        (pointercancel)="stopHold()"
+        (contextmenu)="$event.preventDefault()"
+      >+</button>
     </div>
 
     <div class="sim-mobile-row">
       <span class="sim-mobile-label">Saat</span>
-      <button type="button" class="sim-mobile-step" (click)="stepMinutes(-5)" aria-label="Beş dakika geri">−</button>
+      <button
+        type="button"
+        class="sim-mobile-step"
+        aria-label="Beş dakika geri"
+        (pointerdown)="startHold('time', -5, $event)"
+        (pointerup)="stopHold()"
+        (pointerleave)="stopHold()"
+        (pointercancel)="stopHold()"
+        (contextmenu)="$event.preventDefault()"
+      >−</button>
       <input
         type="range"
         class="sim-mobile-slider"
@@ -101,7 +128,16 @@
         [value]="timeMinutes"
         (input)="onMinutesChange($any($event.target).value)"
       />
-      <button type="button" class="sim-mobile-step" (click)="stepMinutes(5)" aria-label="Beş dakika ileri">+</button>
+      <button
+        type="button"
+        class="sim-mobile-step"
+        aria-label="Beş dakika ileri"
+        (pointerdown)="startHold('time', 5, $event)"
+        (pointerup)="stopHold()"
+        (pointerleave)="stopHold()"
+        (pointercancel)="stopHold()"
+        (contextmenu)="$event.preventDefault()"
+      >+</button>
     </div>
   </div>
 }
