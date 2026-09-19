@@ -150,8 +150,8 @@
 
 .ramadan-track-dot {
   position: absolute;
-  top: 12px;
-  transform: translateX(-50%);
+  top: 20.5px; /* çizginin dikey merkezi (17px + 7px / 2) */
+  transform: translate(-50%, -50%);
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -242,8 +242,8 @@
 
 .track-dot {
   position: absolute;
-  top: 15px;
-  transform: translateX(-50%);
+  top: 22px; /* çizginin dikey merkezi (19px + 6px / 2) */
+  transform: translate(-50%, -50%);
   width: 14px;
   height: 14px;
   border-radius: 50%;

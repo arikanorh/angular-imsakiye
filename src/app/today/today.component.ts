@@ -68,8 +68,11 @@ export class TodayComponent implements OnInit, OnDestroy {
     return this.cityService.city;
   }
 
+  /** Dolgu, noktayla aynı eşlenmiş konumda biter; böylece ikisi her
+   *  zaman senkron kalır. */
   get progressGradient(): string {
-    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.progressPercent}%, #d8e6e2 ${this.progressPercent}%, #d8e6e2 100%)`;
+    const p = this.trackDotPercent;
+    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${p}%, #d8e6e2 ${p}%, #d8e6e2 100%)`;
   }
 
   /** İlerlemeyi (%0-100) uçlardaki ikonlarla çakışmayan %6-94 bandına
@@ -89,7 +92,8 @@ export class TodayComponent implements OnInit, OnDestroy {
   }
 
   get ramadanProgressGradient(): string {
-    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${this.ramadanProgressPercent}%, #d8e6e2 ${this.ramadanProgressPercent}%, #d8e6e2 100%)`;
+    const p = this.ramadanTrackDotPercent;
+    return `linear-gradient(90deg, #0f7b6c 0%, #0f7b6c ${p}%, #d8e6e2 ${p}%, #d8e6e2 100%)`;
   }
 
   private formatDisplayDate(m: moment.Moment): string {
