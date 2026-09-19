@@ -78,7 +78,6 @@ export class TodayComponent implements OnInit, OnDestroy {
   ramadanProgressPercent = 0;
   ramadanStartLabel = '';
   ramadanStartWeekday = '';
-  scaleNote = '';
   firstDayStart = '';
   firstDayEnd = '';
 
@@ -223,8 +222,6 @@ export class TodayComponent implements OnInit, OnDestroy {
       // 30 günden fazla kala 365 gün üzerinden, 30 günden az kala ise
       // (daha belirgin bir ilerleme hissi için) 30 gün üzerinden ölçekle.
       let scale = this.daysUntilRamadan > 30 ? 365 : 30;
-      this.scaleNote =
-        scale === 365 ? 'Ölçek: 365 gün · son 30 günde yakınlaşır' : 'Ölçek: son 30 gün';
       this.ramadanProgressPercent = Math.min(
         100,
         Math.max(0, ((scale - this.daysUntilRamadan) / scale) * 100)
