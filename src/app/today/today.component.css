@@ -44,6 +44,17 @@
   margin-bottom: 8px;
 }
 
+.label-eyebrow.tomorrow {
+  margin-bottom: -4px;
+}
+
+.label-eyebrow.kadir {
+  color: var(--ink);
+  background: var(--gold);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
 /* Kartın kahramanı: geri sayım. */
 .countdown-hero {
   display: flex;
@@ -55,7 +66,7 @@
 }
 
 .remaining-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -64,7 +75,7 @@
 
 .remaining-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(40px, 14vw, 60px);
+  font-size: clamp(2.5rem, 14vw, 3.75rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.05;
@@ -75,7 +86,7 @@
 
 .remaining-unit {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--muted);
   margin-top: 2px;
@@ -87,7 +98,7 @@
   top: -12px;
   transform: translateX(-50%);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 0.6562rem;
   font-weight: 800;
   color: var(--on-accent);
   background: var(--accent);
@@ -101,7 +112,7 @@
   position: absolute;
   top: 34px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--muted);
   white-space: nowrap;
@@ -123,7 +134,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
-  font-size: 10.5px;
+  font-size: 0.6562rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -151,7 +162,7 @@
 }
 
 .label-eyebrow {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -159,7 +170,7 @@
 }
 
 .label-eyebrow.small {
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 .ramadan-countdown-card {
@@ -189,13 +200,13 @@
 }
 
 .ramadan-start b {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--ink);
 }
 
 .ramadan-start span {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--muted);
 }
@@ -241,13 +252,13 @@
 }
 
 .farewell-headline {
-  font-size: 21px;
+  font-size: 1.3125rem;
   font-weight: 800;
   line-height: 1.25;
 }
 
 .farewell-sub {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
   line-height: 1.5;
   max-width: 240px;
@@ -255,7 +266,7 @@
 
 .farewell-footer {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -326,7 +337,7 @@
 
 .ramadan-countdown-number {
   font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(44px, 15vw, 60px);
+  font-size: clamp(2.75rem, 15vw, 3.75rem);
   font-weight: 800;
   line-height: 1.05;
   color: var(--ink);
@@ -407,7 +418,7 @@
 }
 
 .timeline-label-title {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent);
 }
@@ -424,7 +435,7 @@
 
 .timeline-label-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 800;
   color: var(--ink);
 }
@@ -439,7 +450,7 @@
 .date-wrapper {
   text-align: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 700;
   color: var(--muted);
   padding: 4px 0 2px;

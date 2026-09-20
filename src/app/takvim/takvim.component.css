@@ -16,13 +16,13 @@
 }
 
 .tk-summary-text b {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 800;
   color: var(--ink);
 }
 
 .tk-sub {
-  font-size: 11.5px;
+  font-size: 0.7188rem;
   font-weight: 600;
   color: var(--muted);
   margin-top: 2px;
@@ -33,7 +33,7 @@
   align-items: center;
   gap: 5px;
   font: inherit;
-  font-size: 11.5px;
+  font-size: 0.7188rem;
   font-weight: 800;
   color: var(--on-accent);
   background: var(--accent);
@@ -48,7 +48,7 @@
 .tk-head,
 .takvim-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 54px 54px 54px;
+  grid-template-columns: minmax(0, 1fr) 60px 60px;
   align-items: center;
 }
 
@@ -58,7 +58,7 @@
   z-index: 2;
   background: var(--bg-frame);
   padding: 8px 10px 6px;
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -80,7 +80,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 10px 4px;
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -126,7 +126,7 @@
   align-items: center;
   justify-content: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 800;
   flex: none;
 }
@@ -134,6 +134,44 @@
 .takvim-row.today .takvim-day-badge {
   background: var(--accent);
   color: var(--on-accent);
+}
+
+/* Kadir Gecesi: altın tonlu satır ve rozet. */
+.takvim-row.kadir {
+  background: linear-gradient(90deg, rgba(216, 178, 110, 0.28), transparent 70%);
+}
+
+.takvim-row.kadir .takvim-day-badge {
+  background: var(--gold);
+  color: #0f2b26;
+  box-shadow: none;
+}
+
+.takvim-row.kadir .takvim-date .d2,
+.takvim-row.noted .takvim-date .d2 {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+
+/* Bayram günleri: vurgulu rozet, saat yerine tek satır not. */
+.takvim-row.bayram .takvim-day-badge {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.takvim-row.bayram .takvim-date .d2 {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.takvim-row .v.bayram-note {
+  grid-column: 2 / 4;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
 /* Cuma: altın halka ve vurgulu gün adı. */
@@ -151,14 +189,14 @@
 }
 
 .takvim-date .d1 {
-  font-size: 13.5px;
+  font-size: 0.8438rem;
   font-weight: 700;
   color: var(--ink);
   white-space: nowrap;
 }
 
 .takvim-date .d2 {
-  font-size: 10.5px;
+  font-size: 0.6562rem;
   color: var(--muted);
   margin-top: 1px;
   white-space: nowrap;
@@ -172,13 +210,17 @@
 .takvim-row .v {
   text-align: right;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
-.takvim-row .v.dim {
-  color: var(--muted);
-  font-weight: 600;
+/* Kadir Gecesi rengi Cuma kuralından sonra gelir; aynı gün Cuma'ya düşse de altın kalır. */
+.takvim-row.kadir .takvim-date .d2 {
+  color: #8a6a2a;
+}
+
+:root[data-theme="dark"] .takvim-row.kadir .takvim-date .d2 {
+  color: var(--gold);
 }

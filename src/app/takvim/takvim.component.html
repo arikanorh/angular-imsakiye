@@ -1,7 +1,7 @@
 <div class="tk-summary">
   <div class="tk-summary-text">
     <b>Ramazan {{ hijriYear }}</b>
-    <div class="tk-sub">{{ totalDays }} gün · {{ rangeLabel }}</div>
+    <div class="tk-sub">{{ summaryLine }}</div>
   </div>
   @if (hasToday) {
     <button type="button" class="tk-today-btn" (click)="scrollToToday()">
@@ -15,25 +15,37 @@
   <span>Gün</span>
   <span>Sahur</span>
   <span>İftar</span>
-  <span>Süre</span>
 </div>
 
 <div class="takvim-list">
   @for (week of weeks; track week.label) {
     <div class="tk-sep">{{ week.label }}</div>
     @for (gun of week.days; track gun.day) {
-      <div class="takvim-row" [class.today]="gun.isToday" [class.past]="gun.isPast" [class.cuma]="gun.isFriday">
+      <div class="takvim-row" [class.today]="gun.isToday" [class.past]="gun.isPast" [class.cuma]="gun.isFriday" [class.kadir]="gun.isKadir" [class.noted]="gun.note">
         <div class="takvim-day">
           <div class="takvim-day-badge">{{ gun.day }}</div>
           <div class="takvim-date">
             <div class="d1">{{ gun.dateLabel }}</div>
-            <div class="d2">{{ gun.weekdayLabel }}{{ gun.isToday ? ' · Bugün' : '' }}</div>
+            <div class="d2">{{ gun.weekdayLabel }}{{ gun.note ? ' · ' + gun.note : '' }}{{ gun.isToday ? ' · Bugün' : '' }}</div>
           </div>
         </div>
         <div class="v">{{ gun.start }}</div>
         <div class="v">{{ gun.end }}</div>
-        <div class="v dim">{{ gun.durationLabel }}</div>
       </div>
     }
+  }
+
+  <div class="tk-sep">Ramazan Bayramı</div>
+  @for (gun of bayram; track gun.day) {
+    <div class="takvim-row bayram" [class.today]="gun.isToday" [class.past]="gun.isPast">
+      <div class="takvim-day">
+        <div class="takvim-day-badge">{{ gun.day }}</div>
+        <div class="takvim-date">
+          <div class="d1">{{ gun.dateLabel }}</div>
+          <div class="d2">{{ gun.weekdayLabel }} · Bayramın {{ gun.day }}. günü{{ gun.isToday ? ' · Bugün' : '' }}</div>
+        </div>
+      </div>
+      <div class="v bayram-note">{{ gun.day === 1 ? 'Bayramınız mübarek olsun' : '' }}</div>
+    </div>
   }
 </div>
