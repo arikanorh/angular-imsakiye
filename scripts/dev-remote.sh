@@ -11,6 +11,7 @@
 #   bash scripts/dev-remote.sh            # etkileşimli giriş (URL basılır, tarayıcıda onaylanır)
 #   TS_AUTHKEY=tskey-auth-... bash scripts/dev-remote.sh   # anahtarla sessiz giriş
 #   PUBLIC=1 bash scripts/dev-remote.sh   # tailnet yerine herkese açık Funnel URL'i
+#   HMR=1 PUBLIC=1 bash scripts/dev-remote.sh   # bileşen HMR açık (masaüstü testi için)
 #
 # Tailscale kurulu olmayan bir bilgisayardan erişmek için PUBLIC=1 (Funnel)
 # kullanın; Funnel'ın tailnet ACL'inde açık olması gerekir:
@@ -18,6 +19,8 @@
 set -euo pipefail
 
 PORT="${PORT:-4300}"
+# HMR=1 ile bileşen HMR açık (varsayılan kapalı: tam sayfa live reload)
+NG_HMR_FLAG="--no-hmr"; [ "${HMR:-0}" = "1" ] && NG_HMR_FLAG=""
 HOSTNAME_TS="${HOSTNAME_TS:-imsakiye-dev}"
 TS_DIR="${TS_DIR:-/opt/tailscale}"
 STATE_DIR="${STATE_DIR:-$HOME/.tailscale-dev}"
@@ -52,7 +55,7 @@ if ! curl -s -o /dev/null "http://localhost:$PORT/"; then
   echo "ng serve başlatılıyor (port $PORT)..."
   # setsid: bu kabuk kapansa da süreç yaşasın (Claude Code arka plan çağrıları
   # bitince alt süreçleri sonlandırabiliyor).
-  (cd "$ROOT" && setsid nohup npx ng serve --port "$PORT" --allowed-hosts --no-hmr > "$STATE_DIR/ngserve.log" 2>&1 < /dev/null &)
+  (cd "$ROOT" && setsid nohup npx ng serve --port "$PORT" --allowed-hosts $NG_HMR_FLAG > "$STATE_DIR/ngserve.log" 2>&1 < /dev/null &)
   for _ in $(seq 1 90); do
     curl -s -o /dev/null "http://localhost:$PORT/" && break
     sleep 1
