@@ -15,6 +15,17 @@
   box-shadow: 0 10px 22px -14px rgba(var(--shadow-rgb), 0.35);
 }
 
+.tk-summary-text {
+  min-width: 0;
+}
+
+.tk-summary-text b,
+.tk-sub {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .tk-summary-text b {
   font-size: 0.875rem;
   font-weight: 800;
@@ -169,6 +180,10 @@
   grid-column: 2 / 4;
   color: var(--accent);
   font-weight: 800;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .takvim-row .v.bayram-namazi small {
@@ -188,6 +203,9 @@
   font-weight: 700;
   color: var(--muted);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 /* Cuma: altın halka ve vurgulu gün adı. */
@@ -202,6 +220,7 @@
 
 .takvim-date {
   min-width: 0;
+  overflow: hidden; /* uzun notlar üç noktayla kısalır, satır taşmaz */
 }
 
 .takvim-date .d1 {
@@ -209,6 +228,8 @@
   font-weight: 700;
   color: var(--ink);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .takvim-date .d2 {
@@ -216,6 +237,8 @@
   color: var(--muted);
   margin-top: 1px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .takvim-row.today .takvim-date .d2 {
