@@ -48,7 +48,9 @@ fi
 # --- ng serve (--allowed-hosts şart: Vite yabancı host adını yoksa reddeder)
 if ! curl -s -o /dev/null "http://localhost:$PORT/"; then
   echo "ng serve başlatılıyor (port $PORT)..."
-  (cd "$ROOT" && nohup npx ng serve --port "$PORT" --allowed-hosts > "$STATE_DIR/ngserve.log" 2>&1 &)
+  # setsid: bu kabuk kapansa da süreç yaşasın (Claude Code arka plan çağrıları
+  # bitince alt süreçleri sonlandırabiliyor).
+  (cd "$ROOT" && setsid nohup npx ng serve --port "$PORT" --allowed-hosts > "$STATE_DIR/ngserve.log" 2>&1 < /dev/null &)
   for _ in $(seq 1 90); do
     curl -s -o /dev/null "http://localhost:$PORT/" && break
     sleep 1
@@ -58,9 +60,9 @@ fi
 # --- tailscaled (kullanıcı alanı ağı: TUN aygıtı gerekmez)
 if ! "$TS_DIR/tailscale" --socket="$SOCK" status >/dev/null 2>&1; then
   echo "tailscaled başlatılıyor..."
-  (nohup "$TS_DIR/tailscaled" --tun=userspace-networking \
+  (setsid nohup "$TS_DIR/tailscaled" --tun=userspace-networking \
       --state="$STATE_DIR/tailscaled.state" --socket="$SOCK" --port=0 \
-      > "$STATE_DIR/tailscaled.log" 2>&1 &)
+      > "$STATE_DIR/tailscaled.log" 2>&1 < /dev/null &)
   sleep 3
 fi
 
@@ -74,18 +76,26 @@ else
   "$TS_DIR/tailscale" --socket="$SOCK" up "${UP_ARGS[@]}"
 fi
 
-# --- dev sunucusunu tailnet'e (ya da Funnel ile herkese) aç
+# --- adresler
+IP="$("$TS_DIR/tailscale" --socket="$SOCK" ip -4 2>/dev/null || true)"
+DNS="$("$TS_DIR/tailscale" --socket="$SOCK" status --json 2>/dev/null | sed -n 's/.*"DNSName": "\([^"]*\)\.".*/\1/p' | head -1)"
+
+echo
+echo "Hazır. Tailscale kurulu bir cihazdan doğrudan (HTTP):"
+[ -n "$IP" ]  && echo "  http://$IP:$PORT"
+[ -n "$DNS" ] && echo "  http://$DNS:$PORT"
+
+# --- HTTPS: tailscale serve (tailnet) ya da funnel (herkese açık).
+# Tailnet'te "Serve" kapalıysa komut bir etkinleştirme bağlantısı basar ve
+# bekler; burada takılmamak için zaman aşımıyla çalıştırılır.
 "$TS_DIR/tailscale" --socket="$SOCK" serve reset >/dev/null 2>&1 || true
 if [ "${PUBLIC:-0}" = "1" ]; then
-  "$TS_DIR/tailscale" --socket="$SOCK" funnel --bg "$PORT"
+  timeout 20 "$TS_DIR/tailscale" --socket="$SOCK" funnel --bg "$PORT" 2>&1 | sed 's/^/  /' || true
 else
-  "$TS_DIR/tailscale" --socket="$SOCK" serve --bg "$PORT"
+  timeout 20 "$TS_DIR/tailscale" --socket="$SOCK" serve --bg "$PORT" 2>&1 | sed 's/^/  /' || true
 fi
-
-IP="$("$TS_DIR/tailscale" --socket="$SOCK" ip -4 2>/dev/null || true)"
 echo
-echo "Hazır."
-[ -n "$IP" ] && echo "  Tailnet içinden doğrudan: http://$IP:$PORT"
-echo "  HTTPS adresi yukarıdaki 'serve/funnel' çıktısında (https://$HOSTNAME_TS.<tailnet>.ts.net)."
+echo "  HTTPS adresi yukarıda 'Available within your tailnet' altında görünür (https://$DNS)."
+echo "  'Serve is not enabled' diyorsa basılan bağlantıdan bir kez etkinleştirip scripti tekrar çalıştırın."
 echo "  Hot reload: Vite HMR websocket'i aynı adres üzerinden çalışır."
 echo "  Durdurmak için: $TS_DIR/tailscale --socket=$SOCK serve reset; pkill -f tailscaled"

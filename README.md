@@ -71,8 +71,12 @@ bash scripts/dev-remote.sh
 
 - Script Tailscale'i indirir, `ng serve --allowed-hosts` ve `tailscaled`'i
   başlatır, bir giriş bağlantısı basar. Bağlantıyı tarayıcıda açıp makineyi
-  tailnet'inize ekleyin; ardından `tailscale serve` dev sunucusunu
-  `https://imsakiye-dev.<tailnet>.ts.net` adresinde tailnet'e açar.
+  tailnet'inize ekleyin. Tailscale kurulu bir cihazdan doğrudan
+  `http://imsakiye-dev.<tailnet>.ts.net:4300` (ya da `http://100.x.y.z:4300`)
+  ile bağlanırsınız.
+- HTTPS adresi (`https://imsakiye-dev.<tailnet>.ts.net`) için tailnet'te
+  **Serve** bir kez etkinleştirilmeli; kapalıysa script etkinleştirme
+  bağlantısını basar, açtıktan sonra scripti tekrar çalıştırın.
 - Kendi bilgisayarınızda Tailscale kurulu değilse `PUBLIC=1` ile Funnel
   kullanın (herkese açık HTTPS adresi; tailnet ACL'inde Funnel açık olmalı).
 - Her yeni sandbox oturumunda giriş yenilenir. Sessiz giriş için Tailscale
