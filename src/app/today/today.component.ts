@@ -61,6 +61,12 @@ export class TodayComponent implements OnInit, OnDestroy {
   spanStartLabel = '';
   spanEndLabel = '';
   dayIndex = 0;
+  /** İftardan sonra kutucuklar ertesi güne ait; başlığı ("Yarın · 11 Şubat Perşembe"). */
+  tomorrowLabel = '';
+  /** Kadir Gecesi (26. günün iftarından 27. günün sahuruna) sürüyorsa true. */
+  isKadirNight = false;
+  /** Bitiş kartı: "9–11 Mart" */
+  bayramRangeLabel = '';
   sahurPassed;
   iftarPassed;
   progressPercent = 0;
@@ -135,6 +141,14 @@ export class TodayComponent implements OnInit, OnDestroy {
     return m.format('H:mm');
   }
 
+  /** "9–11 Mart" ya da ay değişiyorsa "28 Şubat – 2 Mart". */
+  private formatDayRange(a: moment.Moment, b: moment.Moment): string {
+    if (a.month() === b.month()) {
+      return `${a.date()}–${b.date()} ${AY_ADLARI_TR[a.month()]}`;
+    }
+    return `${a.date()} ${AY_ADLARI_TR[a.month()]} – ${b.date()} ${AY_ADLARI_TR[b.month()]}`;
+  }
+
   ngOnInit() {
     this.citySub = this.cityService.city$.subscribe(() => this.calc());
     this.simTimeSub = this.simTime.override$.subscribe(() => this.calc());
@@ -185,7 +199,9 @@ export class TodayComponent implements OnInit, OnDestroy {
       // yerine kapanış kartını göstermek için burada duruyoruz.
       this.date = this.formatDisplayDate(todayDateTime);
       this.totalDays = data.length;
-      this.nextRamadanYear = moment(data[data.length - 1].date, 'YYYY-MM-DD').year() + 1;
+      let lastDay = moment(data[data.length - 1].date, 'YYYY-MM-DD');
+      this.nextRamadanYear = lastDay.year() + 1;
+      this.bayramRangeLabel = this.formatDayRange(lastDay.clone().add(1, 'day'), lastDay.clone().add(3, 'days'));
       this.showRamadanCountdown = false;
       this.showRemainingCountdown = false;
       return;
@@ -294,11 +310,24 @@ export class TodayComponent implements OnInit, OnDestroy {
     iftarPassed = todayDateTime.isAfter(iftarDateTime);
 
     if (nextDay) {
-      this.sahurPassed = true;
-      this.iftarPassed = true;
+      // Ertesi günün vakitleri henüz gelmedi; "geçti" stili yanıltıcı olur.
+      this.sahurPassed = false;
+      this.iftarPassed = false;
+      let tomorrow = moment(today.date, 'YYYY-MM-DD');
+      this.tomorrowLabel = `Yarın · ${tomorrow.date()} ${AY_ADLARI_TR[tomorrow.month()]} ${GUN_ADLARI_TR[tomorrow.day()]}`;
     } else {
       this.sahurPassed = todayDateTime.isAfter(sahurDateTime);
       this.iftarPassed = iftarPassed;
+      this.tomorrowLabel = '';
+    }
+
+    // Kadir Gecesi: Diyanet takviminde 26. günün tarihine yazılır; gece
+    // 26. günün iftarıyla başlar, 27. günün sahuruyla biter.
+    this.isKadirNight = false;
+    if (data.length >= 27) {
+      let kadirStart = moment(data[25].date + ' ' + data[25].end, format);
+      let kadirEnd = moment(data[26].date + ' ' + data[26].start, format);
+      this.isKadirNight = todayDateTime.isSameOrAfter(kadirStart) && todayDateTime.isBefore(kadirEnd);
     }
 
     // Çizelge her zaman bir aralığı temsil eder: gündüz sahur→iftar,

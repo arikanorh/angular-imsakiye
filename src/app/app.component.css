@@ -73,7 +73,7 @@
 }
 
 .app-title {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
 }
 
@@ -85,6 +85,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden; /* içerik taşsa da yatay kaydırma olmasın */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   scrollbar-width: none;
@@ -115,7 +116,7 @@
   gap: 6px;
   padding: 9px 0;
   border-radius: 11px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--muted);
   text-decoration: none;
@@ -145,7 +146,7 @@
   border: none;
   color: var(--ink);
   font: inherit;
-  font-size: 13.5px;
+  font-size: 0.8438rem;
   font-weight: 700;
   padding: 8px 30px 8px 14px;
   cursor: pointer;
@@ -169,7 +170,7 @@
   border-radius: 8px;
   background: var(--ink);
   color: var(--bg-frame);
-  font-size: 16px;
+  font-size: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
@@ -226,7 +227,7 @@
 }
 
 .sheet-title {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 800;
   margin-bottom: 8px;
 }
@@ -238,7 +239,7 @@
   gap: 12px;
   padding: 10px 0;
   border-top: 1px solid var(--soft);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -250,7 +251,7 @@
 
 .kv .mono {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px;
+  font-size: 0.7812rem;
 }
 
 .seg {
@@ -263,7 +264,7 @@
 
 .seg button {
   font: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--muted);
   background: transparent;

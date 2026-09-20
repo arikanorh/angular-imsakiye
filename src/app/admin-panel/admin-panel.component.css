@@ -61,7 +61,7 @@
 }
 
 .sim-title {
-  font-size: 10.5px;
+  font-size: 0.6562rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -94,19 +94,19 @@
 
 .sim-date {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 800;
 }
 
 .sim-status {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--accent);
 }
 
 .sim-time-input {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--ink);
   background: var(--bg-frame);
@@ -182,7 +182,7 @@
   justify-content: center;
   gap: 5px;
   font: inherit;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--accent);
   background: none;
@@ -228,13 +228,13 @@
 
 .sim-mobile-date {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .sim-mobile-status {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -272,7 +272,7 @@
   background: var(--bg-frame);
   color: var(--accent);
   font: inherit;
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
@@ -289,7 +289,7 @@
 .sim-mobile-label {
   width: 30px;
   flex: none;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;

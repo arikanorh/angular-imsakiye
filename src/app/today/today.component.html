@@ -11,7 +11,7 @@
       </div>
       <div class="label-eyebrow badge">Ramazan Bitti</div>
       <div class="farewell-headline">Bayramınız<br />Mübarek Olsun</div>
-      <div class="farewell-sub">{{ totalDays }} günlük yolculuk tamamlandı. {{ city }}'da bu yılki imsakiye burada sona eriyor.</div>
+      <div class="farewell-sub">{{ totalDays }} günlük yolculuk tamamlandı. Ramazan Bayramı {{ bayramRangeLabel }}.</div>
       <div class="farewell-footer">{{ nextRamadanYear }}'de görüşmek üzere</div>
     </div>
   } @else {
@@ -70,7 +70,11 @@
   <div class="timeline-card">
     <div class="card-topline">
       <span class="label-eyebrow accent">{{ dayStatusLabel }}</span>
-      <span class="label-eyebrow">{{ weekdayLabel }}</span>
+      @if (isKadirNight) {
+        <span class="label-eyebrow kadir">Kadir Gecesi</span>
+      } @else {
+        <span class="label-eyebrow">{{ weekdayLabel }}</span>
+      }
     </div>
 
     <div class="countdown-hero">
@@ -106,6 +110,9 @@
       <span class="track-end-label end">{{ spanEndLabel }}</span>
     </div>
 
+    @if (tomorrowLabel) {
+      <div class="label-eyebrow small left tomorrow">{{ tomorrowLabel }}</div>
+    }
     <div class="timeline-labels">
       <div class="timeline-label value-tile sahur" [class.passed]="sahurPassed">
         <div class="tile-glyph">
