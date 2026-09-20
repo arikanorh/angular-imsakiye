@@ -45,7 +45,14 @@
           <div class="d2">{{ gun.weekdayLabel }} · Bayramın {{ gun.day }}. günü{{ gun.isToday ? ' · Bugün' : '' }}</div>
         </div>
       </div>
-      <div class="v bayram-note">{{ gun.day === 1 ? 'Bayramınız mübarek olsun' : '' }}</div>
+      @if (gun.day === 1 && bayramNamaziSaati) {
+        <div class="v bayram-namazi">
+          <small>Bayram namazı</small>
+          {{ bayramNamaziSaati }}
+        </div>
+      } @else {
+        <div class="v bayram-note">{{ gun.day === 1 ? 'Bayramınız mübarek olsun' : '' }}</div>
+      }
     </div>
   }
 </div>

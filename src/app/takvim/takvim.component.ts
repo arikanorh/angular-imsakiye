@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ElementRef, AfterViewInit } from '@angular/core';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
-import { imsakiye } from '../imsakiye';
+import { imsakiye, bayramNamazi } from '../imsakiye';
 import { CityService } from '../city.service';
 import { SimTimeService } from '../sim-time.service';
 
@@ -75,6 +75,8 @@ export class TakvimComponent implements OnInit, AfterViewInit, OnDestroy {
   summaryLine = '';
   hasToday = false;
   bayram: BayramGunu[] = [];
+  /** Bayramın 1. günü namaz saati; veri girilmemişse null. */
+  bayramNamaziSaati: string | null = null;
 
   private citySub: Subscription;
   private simTimeSub: Subscription;
@@ -153,6 +155,7 @@ export class TakvimComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
 
+    this.bayramNamaziSaati = bayramNamazi[this.city] ?? null;
     let last = moment(data[lastIndex].date, 'YYYY-MM-DD');
     this.bayram = [1, 2, 3].map((n) => {
       let m = last.clone().add(n, 'days');

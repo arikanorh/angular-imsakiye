@@ -528,3 +528,15 @@ export const imsakiye = {
     },
   ],
 };
+
+/**
+ * Ramazan Bayramı namazı saatleri (Bayramın 1. günü, şehir bazlı).
+ * Diyanet her yıl bayrama yakın açıklar: https://namazvakitleri.diyanet.gov.tr
+ * Değer girilince Takvim'deki "Bayramın 1. günü" satırında gösterilir;
+ * null ise satırda yalnızca tebrik notu kalır.
+ */
+export const bayramNamazi: Record<string, string | null> = {
+  Çorlu: null,
+  İstanbul: null,
+  Manisa: null,
+};
