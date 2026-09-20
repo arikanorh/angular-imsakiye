@@ -97,6 +97,12 @@ Script'in yaptıkları ve bilinen tuzaklar (2026-09-20'de çalışan yöntem):
   çalıştır, ardından `curl` ile HTTP 200 doğrula.
 - Kapatmak: `tailscale --socket=… funnel --https=443 off` (ya da
   `serve reset`), gerekirse `tailscaled`'i PID ile durdur.
+- **Yanıt biçimi:** "tailscale aç" denince kullanıcıya **yalnızca doğrulanmış
+  URL'yi** ver (`https://imsakiye-dev.tailb082d7.ts.net`), açıklama ve adım
+  anlatımı yazma. Açılamadıysa tek cümle hata ver ("Açamadım: …" + neden).
+  Doğrulama: Funnel açıldıktan sonra düğümün DERP relay'i oturması ~30 sn
+  sürebilir; `curl` HTTP 200 alana kadar birkaç kez (toplam ~90 sn) dene,
+  başlığın (`<title>`) geldiğini gör, sonra yanıtla.
 - **`pkill -f` tuzağı:** kalıp metni çalışan Bash komutunun kendi satırında
   da geçerse kabuk kendini öldürür (çıkış kodu 144). Süreçleri PID ile
   ya da komut satırında geçmeyen bir kalıpla durdur; başlatma ve durdurma
