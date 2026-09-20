@@ -60,8 +60,10 @@ fi
 # --- tailscaled (kullanıcı alanı ağı: TUN aygıtı gerekmez)
 if ! "$TS_DIR/tailscale" --socket="$SOCK" status >/dev/null 2>&1; then
   echo "tailscaled başlatılıyor..."
+  # --statedir: kimlik ve HTTPS sertifikaları (serve/funnel) burada saklanır;
+  # yalnızca --state verilirse sertifika üretilemez ("no TailscaleVarRoot").
   (setsid nohup "$TS_DIR/tailscaled" --tun=userspace-networking \
-      --state="$STATE_DIR/tailscaled.state" --socket="$SOCK" --port=0 \
+      --statedir="$STATE_DIR" --socket="$SOCK" --port=0 \
       > "$STATE_DIR/tailscaled.log" 2>&1 < /dev/null &)
   sleep 3
 fi
