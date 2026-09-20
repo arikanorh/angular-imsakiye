@@ -83,8 +83,10 @@ Script'in yaptıkları ve bilinen tuzaklar (2026-09-20'de çalışan yöntem):
   `~/.tailscale-dev` dizininde tutulur. `tailscaled` **`--statedir`** ile
   başlatılmalı (yalnızca `--state` verilirse Funnel sertifikası üretilemez,
   "no TailscaleVarRoot" hatası).
-- `tailscaled` ve `ng serve --allowed-hosts` **`setsid nohup … &`** ile ayrık
-  başlatılır; aksi halde Bash çağrısı bitince süreçler ölür.
+- `tailscaled` ve `ng serve --allowed-hosts --no-hmr` **`setsid nohup … &`** ile ayrık
+  başlatılır; aksi halde Bash çağrısı bitince süreçler ölür. `--no-hmr`:
+  Angular bileşen HMR'ı tünel üzerinden bazı güncellemeleri uygulayamıyor;
+  tam sayfa live reload daha kararlı.
 - İlk girişte script bir `https://login.tailscale.com/a/…` bağlantısı
   basar; kullanıcı tarayıcıda onaylar. `TS_AUTHKEY` ortam değişkeni varsa
   sessiz giriş yapılır. Kimlik `~/.tailscale-dev/tailscaled.state`'te kalır,

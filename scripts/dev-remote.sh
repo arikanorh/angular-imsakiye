@@ -45,12 +45,14 @@ if [ ! -x "$TS_DIR/tailscaled" ]; then
   rm -rf "$tmp"
 fi
 
-# --- ng serve (--allowed-hosts şart: Vite yabancı host adını yoksa reddeder)
+# --- ng serve (--allowed-hosts şart: Vite yabancı host adını yoksa reddeder;
+#     --no-hmr: bileşen HMR'ı tünel üzerinden güvenilmez, her değişiklikte tam
+#     sayfa yenilemesi (live reload) daha kararlı)
 if ! curl -s -o /dev/null "http://localhost:$PORT/"; then
   echo "ng serve başlatılıyor (port $PORT)..."
   # setsid: bu kabuk kapansa da süreç yaşasın (Claude Code arka plan çağrıları
   # bitince alt süreçleri sonlandırabiliyor).
-  (cd "$ROOT" && setsid nohup npx ng serve --port "$PORT" --allowed-hosts > "$STATE_DIR/ngserve.log" 2>&1 < /dev/null &)
+  (cd "$ROOT" && setsid nohup npx ng serve --port "$PORT" --allowed-hosts --no-hmr > "$STATE_DIR/ngserve.log" 2>&1 < /dev/null &)
   for _ in $(seq 1 90); do
     curl -s -o /dev/null "http://localhost:$PORT/" && break
     sleep 1
