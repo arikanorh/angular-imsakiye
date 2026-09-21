@@ -25,6 +25,13 @@ projesi, https://imsa-kiye.web.app) deploy ediliyor — bkz. README.md
   seçmeden uygulamaya geçme. Mockup dosyalarını `scratch/` altında
   üret; yayınladıktan sonra sil, repo'ya commit etme.
 
+## Yapılacaklar klasörü
+
+`yapilacaklar/` altında kenara kaldırılmış işlerin planları durur (fazlar,
+adımlar, bitti ölçütleri). Kullanıcı bir planı işe alınca adımlar oradaki
+kutulardan takip edilir; plan tamamlanınca dosya silinir. Yeni bir plan
+istenince buraya yazılır, `yapilacaklar/README.md` tablosuna satır eklenir.
+
 ## Bu ortamda (remote/CLI sandbox) test etme notları
 
 - Sistem `node` sürümü (`/opt/node22`) Angular CLI'nin istediği
