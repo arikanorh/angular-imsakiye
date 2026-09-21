@@ -93,10 +93,10 @@ Script'in yaptıkları ve bilinen tuzaklar (2026-09-20'de çalışan yöntem):
 - `tailscaled` ve `ng serve --allowed-hosts --no-hmr` **`setsid nohup … &`** ile ayrık
   başlatılır; aksi halde Bash çağrısı bitince süreçler ölür. `--no-hmr`:
   Angular bileşen HMR'ı tünel üzerinden bazı güncellemeleri uygulayamıyor;
-  tam sayfa live reload daha kararlı. Kullanıcı HMR'ı denemek isterse
-  ("hmr ile aç") `HMR=1 PUBLIC=1 bash scripts/dev-remote.sh`; not: mobil
-  Safari arka plan sekmede HMR mesajlarını erteleyebiliyor, masaüstünde
-  karşılaştırmak daha sağlıklı.
+  tam sayfa live reload daha kararlı. **Karar (2026-09-21, masaüstü
+  karşılaştırmasından sonra): Tailscale her zaman HMR'sız açılır.** Script'teki
+  `HMR=1` anahtarı yalnızca ileride yeniden ölçmek için duruyor; kullanıcı
+  açıkça istemeden kullanılmaz.
 - İlk girişte script bir `https://login.tailscale.com/a/…` bağlantısı
   basar; kullanıcı tarayıcıda onaylar. `TS_AUTHKEY` ortam değişkeni varsa
   sessiz giriş yapılır. Kimlik `~/.tailscale-dev/tailscaled.state`'te kalır,
