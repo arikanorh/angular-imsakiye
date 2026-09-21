@@ -48,6 +48,14 @@
   margin-bottom: -4px;
 }
 
+.label-eyebrow.countdown {
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 .label-eyebrow.kadir {
   color: var(--ink);
   background: var(--gold);

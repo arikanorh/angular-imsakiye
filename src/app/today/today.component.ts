@@ -65,6 +65,8 @@ export class TodayComponent implements OnInit, OnDestroy {
   tomorrowLabel = '';
   /** Kadir Gecesi (26. günün iftarından 27. günün sahuruna) sürüyorsa true. */
   isKadirNight = false;
+  /** Ramazan'ın son 3 günü için üst satır rozeti; boşsa haftanın günü gösterilir. */
+  lastDaysLabel = '';
   /** Bitiş kartı: "9–11 Mart" */
   bayramRangeLabel = '';
   sahurPassed;
@@ -321,13 +323,27 @@ export class TodayComponent implements OnInit, OnDestroy {
       this.tomorrowLabel = '';
     }
 
-    // Kadir Gecesi: Diyanet takviminde 26. günün tarihine yazılır; gece
-    // 26. günün iftarıyla başlar, 27. günün sahuruyla biter.
+    // Kadir Gecesi: Diyanet takviminde 26. günün tarihine yazılır. Rozet
+    // 26. günün sahurundan 27. günün sahuruna kadar (gün + gece) görünür.
     this.isKadirNight = false;
     if (data.length >= 27) {
-      let kadirStart = moment(data[25].date + ' ' + data[25].end, format);
+      let kadirStart = moment(data[25].date + ' ' + data[25].start, format);
       let kadirEnd = moment(data[26].date + ' ' + data[26].start, format);
       this.isKadirNight = todayDateTime.isSameOrAfter(kadirStart) && todayDateTime.isBefore(kadirEnd);
+    }
+
+    // Son günler: takvim gününe göre "Son 3 gün" → "Son 2 gün · Yarın Arife"
+    // → "Arife · Son gün". Kadir rozeti varsa o öncelikli.
+    this.lastDaysLabel = '';
+    if (this.ramadanStarted) {
+      let remainingDays = data.length - Number(calendarDay.day) + 1;
+      if (remainingDays === 3) {
+        this.lastDaysLabel = 'Son 3 gün';
+      } else if (remainingDays === 2) {
+        this.lastDaysLabel = 'Son 2 gün · Yarın Arife';
+      } else if (remainingDays === 1) {
+        this.lastDaysLabel = 'Arife · Son gün';
+      }
     }
 
     // Çizelge her zaman bir aralığı temsil eder: gündüz sahur→iftar,

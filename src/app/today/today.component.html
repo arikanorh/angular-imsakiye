@@ -72,6 +72,8 @@
       <span class="label-eyebrow accent">{{ dayStatusLabel }}</span>
       @if (isKadirNight) {
         <span class="label-eyebrow kadir">Kadir Gecesi</span>
+      } @else if (lastDaysLabel) {
+        <span class="label-eyebrow countdown">{{ lastDaysLabel }}</span>
       } @else {
         <span class="label-eyebrow">{{ weekdayLabel }}</span>
       }
