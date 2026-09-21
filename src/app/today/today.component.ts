@@ -332,17 +332,17 @@ export class TodayComponent implements OnInit, OnDestroy {
       this.isKadirNight = todayDateTime.isSameOrAfter(kadirStart) && todayDateTime.isBefore(kadirEnd);
     }
 
-    // Son günler: takvim gününe göre "Son 3 gün" → "Son 2 gün · Yarın Arife"
-    // → "Arife · Son gün". Kadir rozeti varsa o öncelikli.
+    // Son günler: takvim gününe göre "Son 3 gün" → "Yarın Arife" → "Arife".
+    // Kadir rozeti varsa o öncelikli.
     this.lastDaysLabel = '';
     if (this.ramadanStarted) {
       let remainingDays = data.length - Number(calendarDay.day) + 1;
       if (remainingDays === 3) {
         this.lastDaysLabel = 'Son 3 gün';
       } else if (remainingDays === 2) {
-        this.lastDaysLabel = 'Son 2 gün · Yarın Arife';
+        this.lastDaysLabel = 'Yarın Arife';
       } else if (remainingDays === 1) {
-        this.lastDaysLabel = 'Arife · Son gün';
+        this.lastDaysLabel = 'Arife';
       }
     }
 

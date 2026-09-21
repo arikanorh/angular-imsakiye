@@ -35,6 +35,10 @@
   gap: 10px;
 }
 
+.card-topline .label-eyebrow {
+  white-space: nowrap;
+}
+
 .label-eyebrow.accent {
   color: var(--accent);
 }
