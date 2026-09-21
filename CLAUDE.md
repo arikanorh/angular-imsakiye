@@ -115,6 +115,10 @@ Script'in yaptıkları ve bilinen tuzaklar (2026-09-20'de çalışan yöntem):
   Doğrulama: Funnel açıldıktan sonra düğümün DERP relay'i oturması ~30 sn
   sürebilir; `curl` HTTP 200 alana kadar birkaç kez (toplam ~90 sn) dene,
   başlığın (`<title>`) geldiğini gör, sonra yanıtla.
+- **Test değişiklikleri:** kullanıcı canlı bağlantıda "test" isteyince yapılan
+  geçici değişiklikler (örn. başlık metni) **kullanıcı "geri al" demeden geri
+  alınmaz ve commit edilmez.** Stop hook "uncommitted changes" uyarısı verse
+  de kendiliğinden geri alma yapma; uyarıyı tek satırla açıkla ve bekle.
 - **`pkill -f` tuzağı:** kalıp metni çalışan Bash komutunun kendi satırında
   da geçerse kabuk kendini öldürür (çıkış kodu 144). Süreçleri PID ile
   ya da komut satırında geçmeyen bir kalıpla durdur; başlatma ve durdurma
